@@ -22,39 +22,7 @@ export default function CompanyPage() {
                 {/* CONTAINED GRID LAYOUT (FILTER + CARDS) */}
                 <section className="w-full max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
 
-                    {/* The Filter Bar with thin borders left, right, top */}
-                    <div className="w-full border-t border-x border-[#ebe7e0] bg-[#fcfbfa] overflow-x-auto scroller-hide">
-                        <div className="p-[12px] md:p-[16px] flex items-center justify-start min-w-max">
-                            <button className="bg-[#008f51] text-white text-[10px] md:text-[11px] font-semibold tracking-[0.16em] px-6 py-[12px] uppercase hover:bg-[#007b46] transition-colors">
-                                SPOTLIGHTS
-                            </button>
-
-                            <div className="h-5 w-[1px] bg-[#ebe7e0] mx-4 md:mx-6"></div>
-
-                            <button className="text-[10px] md:text-[11px] text-[#595959] font-medium tracking-[0.12em] uppercase hover:text-black transition-colors">
-                                ALL
-                            </button>
-
-                            <div className="h-5 w-[1px] bg-[#ebe7e0] mx-4 md:mx-6"></div>
-
-                            <div className="flex items-center gap-6 md:gap-8">
-                                {/* Dropdowns */}
-                                {[
-                                    { label: "CATEGORY" },
-                                    { label: "PARTNER" },
-                                    { label: "CURRENT STAGE" },
-                                    { label: "FIRST PARTNERED" }
-                                ].map((item) => (
-                                    <button key={item.label} className="text-[10px] md:text-[11px] text-[#595959] font-medium tracking-[0.12em] flex items-center gap-[6px] uppercase hover:text-black transition-colors group">
-                                        {item.label}
-                                        <svg viewBox="0 0 10 6" className="w-[8px] h-[5px] fill-none stroke-current stroke-[1.5] group-hover:translate-y-[1px] transition-transform opacity-70">
-                                            <path d="M1 1L5 5L9 1" />
-                                        </svg>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                
 
                     {/* The main Grid of Cards, completely bordered off */}
                     <div className="w-full border border-[#ebe7e0] p-[12px] md:p-[16px]">

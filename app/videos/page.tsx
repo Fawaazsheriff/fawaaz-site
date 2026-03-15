@@ -63,7 +63,7 @@ const PAST_EPISODES = [
 
 // Custom Hover Overlay Component
 const VideoHoverOverlay = () => (
-    <div className="absolute inset-0 bg-[#0d143a]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-[24px]">
+    <div className="absolute inset-0 bg-[#0d143a]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-[18px]">
         <div className="bg-white text-black rounded-full px-6 py-3 flex items-center gap-2 font-bold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
             View Episode
             <div className="bg-black text-white rounded-full p-[2px]">
@@ -114,17 +114,17 @@ export default function VideosPage() {
         <div className="min-h-screen flex flex-col w-full bg-white relative font-sans">
             <Navbar />
 
-            <main className="flex-1 w-full pt-[80px] md:pt-[100px] pb-32">
+            <main className="flex-1 w-full pt-[64px] md:pt-[80px] pb-28">
 
                 {/* 1. FEATURED EPISODE SECTION */}
-                <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8 mb-16 md:mb-24">
-                    <h1 className="text-center text-[32px] md:text-[44px] font-black tracking-tight mb-8 md:mb-12 uppercase">
+                <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8 mb-10 md:mb-16">
+                    <h1 className="text-center text-[24px] md:text-[32px] font-black tracking-tight mb-5 md:mb-8 uppercase">
                         FEATURED EPISODE
                     </h1>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-start">
                         {/* Featured Image */}
-                        <a href={`/videos/${FEATURED_EPISODE.id}`} className="group relative block w-full aspect-[16/10] md:aspect-[3/2] rounded-[24px] overflow-hidden bg-gray-100">
+                        <a href={`/videos/${FEATURED_EPISODE.id}`} className="group relative block w-full aspect-[16/10] md:aspect-[3/2] rounded-[18px] overflow-hidden bg-gray-100 lg:max-w-[520px] lg:justify-self-end">
                             <ThumbnailImage
                                 src={FEATURED_EPISODE.imageUrl}
                                 alt={FEATURED_EPISODE.title}
@@ -134,24 +134,24 @@ export default function VideosPage() {
                         </a>
 
                         {/* Featured Details */}
-                        <div className="flex flex-col justify-center">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="bg-black text-white text-[11px] md:text-[12px] font-bold px-3 py-1 rounded-full tracking-wide">
+                        <div className="flex flex-col justify-center lg:pt-1">
+                            <div className="flex items-center gap-3 mb-3">
+                                <span className="bg-black text-white text-[10px] font-bold px-3 py-[4px] rounded-full tracking-wide">
                                     {FEATURED_EPISODE.tag}
                                 </span>
-                                <span className="text-black/70 text-[13px] md:text-[14px]">
+                                <span className="text-black/70 text-[12px]">
                                     {FEATURED_EPISODE.date}
                                 </span>
                             </div>
 
                             <a href={`/videos/${FEATURED_EPISODE.id}`} className="group/title block">
-                                <h2 className="text-[28px] md:text-[38px] lg:text-[42px] font-bold leading-[1.15] tracking-tight mb-6 group-hover/title:text-black/70 transition-colors">
+                                <h2 className="text-[22px] md:text-[28px] lg:text-[32px] font-bold leading-[1.15] tracking-tight mb-4 group-hover/title:text-black/70 transition-colors">
                                     {FEATURED_EPISODE.title}
                                 </h2>
                             </a>
 
-                            <div className="flex items-center justify-between mt-2">
-                                <a href={`/videos/${FEATURED_EPISODE.id}`} className="text-[14px] md:text-[15px] font-bold flex items-center gap-2 hover:opacity-70 transition-opacity">
+                            <div className="flex items-center justify-between mt-1">
+                                <a href={`/videos/${FEATURED_EPISODE.id}`} className="text-[12px] md:text-[13px] font-bold flex items-center gap-2 hover:opacity-70 transition-opacity">
                                     View Episode <ArrowRight size={16} />
                                 </a>
                                 <SocialIcons />
@@ -164,14 +164,6 @@ export default function VideosPage() {
                 <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8 mb-12">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                         <div className="flex items-center gap-6 md:gap-8 overflow-x-auto w-full md:w-auto scroller-hide pb-2 md:pb-0 min-w-max">
-                            <button className="bg-black text-white text-[12px] md:text-[13px] font-bold px-4 py-[6px] rounded-md tracking-wider uppercase whitespace-nowrap">
-                                VIEW ALL
-                            </button>
-                            {["20VC", "20GROWTH", "20SALES", "20PRODUCT", "THE MEMO"].map(filter => (
-                                <button key={filter} className="text-black text-[12px] md:text-[13px] font-bold tracking-wider uppercase hover:opacity-60 transition-opacity whitespace-nowrap">
-                                    {filter}
-                                </button>
-                            ))}
                         </div>
                         <div className="relative w-full md:w-[300px]">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />

@@ -20,12 +20,8 @@ export function Footer() {
                 {/* Top Section */}
                 <div className="px-6 lg:px-12 pt-16 lg:pt-48 pb-16 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
                     <h2 className="text-[28px] lg:text-[38px] font-light leading-[1.2] tracking-tight max-w-[800px]">
-                        If you&apos;re a founder, investor, or operator<br className="hidden lg:block" /> interested in Tribe Capital, reach out.
+                        if you&apos;re interested, if you&apos;re a founder, investor, or operator<br className="hidden lg:block" />Reach out
                     </h2>
-
-                    <DigitalButton variant="primary" className="py-3 px-6 text-[11px] font-bold tracking-[0.1em] shrink-0">
-                        CONTACT US <ArrowUpRight className="w-[14px] h-[14px] ml-1 stroke-[2]" />
-                    </DigitalButton>
                 </div>
 
                 {/* Horizontal Divider (Spans edge-to-edge of the 1280px bordered container) */}
@@ -47,17 +43,8 @@ export function Footer() {
                         ))}
                     </div>
 
-                    {/* Contact Email */}
-                    <div className="flex justify-end mb-8">
-                        <a href="mailto:hello@tribecap.co" className="text-[28px] lg:text-[34px] font-light hover:opacity-70 transition-opacity">
-                            hello@tribecap.co
-                        </a>
-                    </div>
-
                     {/* Bottom Stats/Info Row */}
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 lg:gap-0 text-[13px] text-[#777] font-light">
-                        <div>© 2026 Tribe Capital Management, LLC</div>
-
                         <Link href="#" className="hover:text-white transition-colors">
                             Legal Notices & Terms of Use
                         </Link>
@@ -65,11 +52,14 @@ export function Footer() {
                         <div>Designed with <span className="text-[16px] leading-none align-middle mx-1">❋</span> riddhish</div>
 
                         <div className="flex items-center gap-5 text-white text-[16px]">
-                            <a href="#" className="hover:opacity-70 font-semibold tracking-wide flex items-center justify-center w-[20px] h-[20px]">
+                            <a href="https://x.com/fawaaz_sheriff" className="hover:opacity-70 font-semibold tracking-wide flex items-center justify-center w-[20px] h-[20px]">
                                 <span>X</span>
                             </a>
-                            <a href="#" className="hover:opacity-70 font-bold tracking-wide flex items-center justify-center w-[20px] h-[20px]">
+                            <a href="https://www.linkedin.com/in/fawaazsheriff/" className="hover:opacity-70 font-bold tracking-wide flex items-center justify-center w-[20px] h-[20px]">
                                 <span>in</span>
+                            </a>
+                            <a href="https://www.youtube.com/@FawaazSheriff" className="hover:opacity-70 font-bold tracking-wide flex items-center justify-center w-[20px] h-[20px]">
+                                <span>yt</span>
                             </a>
                         </div>
                     </div>
