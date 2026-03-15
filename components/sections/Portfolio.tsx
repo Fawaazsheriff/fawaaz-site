@@ -40,7 +40,7 @@ export function Portfolio() {
                         {/* Company Name Box */}
                         <div className="w-full md:w-[320px] shrink-0 mb-4 md:mb-0">
                             <div className="border border-[var(--color-tribe-blue)] text-[var(--color-tribe-blue)] group-hover:border-[#ffffff] group-hover:text-[#ffffff] text-[12px] font-semibold tracking-[0.06em] px-3 py-[7px] inline-block uppercase">
-                                // {company.name}
+                                {"//"} {company.name}
                             </div>
                         </div>
 
