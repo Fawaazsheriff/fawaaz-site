@@ -39,12 +39,7 @@ export function Navbar() {
                     ))}
                 </nav>
 
-                {/* CTA Section (Desktop) */}
-                <div className="hidden lg:flex shrink-0 border-l border-grid">
-                    <DigitalButton variant="primary" className="h-full rounded-none px-8 font-semibold">
-                        LEARN MORE <ArrowUpRight className="w-4 h-4 ml-1" />
-                    </DigitalButton>
-                </div>
+
 
                 {/* Mobile Menu Toggle */}
                 <div
@@ -70,11 +65,6 @@ export function Navbar() {
                             </Link>
                         ))}
                     </nav>
-                    <div className="p-8 mt-auto border-t border-grid bg-gray-50">
-                        <DigitalButton variant="primary" className="w-full py-4 flex justify-center font-semibold rounded-none">
-                            LEARN MORE <ArrowUpRight className="w-4 h-4 ml-2" />
-                        </DigitalButton>
-                    </div>
                 </div>
             )}
         </header>
