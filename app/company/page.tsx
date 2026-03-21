@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import Link from "next/link";
 
 export default function CompanyPage() {
     return (
@@ -25,11 +26,11 @@ export default function CompanyPage() {
                 
 
                     {/* The main Grid of Cards, completely bordered off */}
-                    <div className="w-full border border-[#ebe7e0] p-[12px] md:p-[16px]">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-[12px] md:gap-[16px] w-full">
+                    <div className="w-full border border-[#ebe7e0] p-[12px] md:p-[16px] lg:p-[20px]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px] xl:gap-[20px] w-full">
 
                             {/* Card 1: Klarna */}
-                            <a href="/insights/klarna" className="group block w-full aspect-[4/3] md:aspect-[5/4] relative overflow-hidden bg-[#ff4a9e] transform-gpu hover:shadow-xl transition-all duration-500">
+                            <Link href="/company/klarna" className="group block w-full aspect-[4/3] lg:aspect-square relative overflow-hidden bg-[#ff4a9e] transform-gpu hover:shadow-xl transition-all duration-500">
                                 <div className="absolute inset-0 flex items-center justify-center p-12 transition-transform duration-700 ease-out group-hover:scale-105">
                                     <svg viewBox="0 0 200 150" className="w-[50%] h-auto stroke-[#008f51] stroke-[2.5] fill-none" style={{ strokeLinecap: 'round', strokeLinejoin: 'round' }}>
                                         <path d="M20 110L30 50L80 60L80 120Z" />
@@ -44,10 +45,10 @@ export default function CompanyPage() {
                                         Klarna is a payment solution simplifying the purchasing process.
                                     </p>
                                 </div>
-                            </a>
+                            </Link>
 
                             {/* Card 2: NVIDIA */}
-                            <a href="/insights/nvidia" className="group block w-full aspect-[4/3] md:aspect-[5/4] relative overflow-hidden bg-[#050505] transform-gpu hover:shadow-xl transition-all duration-500">
+                            <Link href="/company/nvidia" className="group block w-full aspect-[4/3] lg:aspect-square relative overflow-hidden bg-[#050505] transform-gpu hover:shadow-xl transition-all duration-500">
                                 <div className="absolute inset-x-0 top-[5%] bottom-[30%] flex items-center justify-center transition-transform duration-700 ease-out group-hover:scale-105">
                                     <svg viewBox="0 0 200 250" className="h-full w-auto stroke-[#00c56f] stroke-[1.5] fill-none" style={{ strokeLinecap: 'round', strokeLinejoin: 'round' }}>
                                         <rect x="50" y="20" width="100" height="210" rx="12" />
@@ -65,10 +66,10 @@ export default function CompanyPage() {
                                         NVIDIA is a pioneer in the art and science of visual computing.
                                     </p>
                                 </div>
-                            </a>
+                            </Link>
 
                             {/* Card 3: Reddit */}
-                            <a href="/insights/reddit" className="group block w-full aspect-[4/3] md:aspect-[5/4] relative overflow-hidden bg-[#ff3300] transform-gpu hover:shadow-xl transition-all duration-500">
+                            <Link href="/company/reddit" className="group block w-full aspect-[4/3] lg:aspect-square relative overflow-hidden bg-[#ff3300] transform-gpu hover:shadow-xl transition-all duration-500">
                                 <div className="absolute inset-0 flex items-center justify-center pb-[15%] transition-transform duration-700 ease-out group-hover:scale-[1.03]">
                                     <span className="text-white text-[140px] md:text-[220px] font-bold tracking-tighter leading-none select-none" style={{ fontFamily: 'Georgia, serif' }}>r/</span>
                                 </div>
@@ -78,10 +79,10 @@ export default function CompanyPage() {
                                         Reddit is the internet's leading source of interest-based content.
                                     </p>
                                 </div>
-                            </a>
+                            </Link>
 
                             {/* Card 4: Apple */}
-                            <a href="/insights/apple" className="group block w-full aspect-[4/3] md:aspect-[5/4] relative overflow-hidden bg-[#e0e0e0] transform-gpu hover:shadow-xl transition-all duration-500">
+                            <Link href="/company/apple" className="group block w-full aspect-[4/3] lg:aspect-square relative overflow-hidden bg-[#e0e0e0] transform-gpu hover:shadow-xl transition-all duration-500">
                                 <div className="absolute inset-0 bg-cover bg-center grayscale contrast-[1.15] transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                                     style={{ backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85) 100%), url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80")' }}>
                                     <svg viewBox="0 0 200 200" className="absolute right-[5%] bottom-[25%] w-[40%] h-auto stroke-white stroke-[1.5] fill-none opacity-90 mix-blend-overlay" style={{ strokeLinecap: 'round', strokeLinejoin: 'round' }}>
@@ -96,7 +97,7 @@ export default function CompanyPage() {
                                         Apple transforms how humans interact with technologies with products like the iPhone, iPod, iPad, Mac and Watch.
                                     </p>
                                 </div>
-                            </a>
+                            </Link>
 
                         </div>
                     </div>
