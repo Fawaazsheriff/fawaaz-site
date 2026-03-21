@@ -14,7 +14,7 @@ export function AreasOfFocus() {
     ];
 
     return (
-        <section className="w-full relative flex flex-col lg:flex-row lg:-ml-[300px] lg:w-[calc(100%+300px)] border-b border-grid bg-white">
+        <section className="w-full relative flex flex-col lg:flex-row border-b border-grid bg-white">
             {/* Left Sidebar Empty Spacer (Matches Portfolio) */}
             <div className="hidden lg:block w-[300px] shrink-0 border-r border-grid bg-white" />
 

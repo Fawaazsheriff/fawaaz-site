@@ -8,12 +8,12 @@ import { ArrowUpRight } from "lucide-react";
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col w-full bg-[#f9f9f9] relative">
-      <div className="flex-1 flex flex-col w-full relative border-grid bg-white">
+      <div className="flex-1 flex flex-col w-full relative bg-white">
         <Navbar />
 
-        <main className="flex-1 w-full lg:pl-[300px] relative lg:border-l border-grid">
+        <main className="flex-1 w-full relative">
           {/* HERO SECTION — Fully immersive video intro matching together.fund */}
-          <section className="relative w-full lg:-ml-[300px] lg:w-[calc(100%+300px)] h-auto min-h-[calc(100vh-72px)] flex flex-col justify-start pt-[15vh] px-6 md:px-12 lg:px-24 border-b border-grid bg-[#fdfbf9] overflow-hidden">
+          <section className="relative w-full h-auto min-h-[calc(100vh-72px)] flex flex-col justify-start pt-[15vh] px-6 md:px-12 lg:px-24 border-b border-grid bg-[#fdfbf9] overflow-hidden">
             
             {/* Background Video - No overlays for full clarity */}
             <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">

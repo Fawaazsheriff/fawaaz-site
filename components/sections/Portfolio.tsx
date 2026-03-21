@@ -12,7 +12,7 @@ const companies = [
 
 export function Portfolio() {
     return (
-        <section className="w-full relative flex flex-col lg:flex-row lg:-ml-[300px] lg:w-[calc(100%+300px)] border-y border-grid bg-white">
+        <section className="w-full relative flex flex-col lg:flex-row border-y border-grid bg-white">
             {/* Left Sidebar Content (Desktop) */}
             <div className="hidden lg:block w-[300px] shrink-0 border-r border-grid pt-[64px] px-10">
                 <p className="text-[20px] leading-[1.3] text-[#222] font-light tracking-[-0.01em]">

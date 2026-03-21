@@ -34,7 +34,7 @@ const insightsList = [
 
 export function Insights() {
     return (
-        <section className="w-full relative flex flex-col lg:flex-row lg:-ml-[300px] lg:w-[calc(100%+300px)] bg-white border-b border-[#efefef] overflow-hidden">
+        <section className="w-full relative flex flex-col lg:flex-row bg-white overflow-hidden">
 
             {/* ─── LEFT: Dark Featured Panel ─── */}
             <div className="w-full lg:w-[300px] shrink-0 bg-[#171a24] text-white flex flex-col justify-between min-h-[380px] lg:min-h-[500px] border-r border-[#2a2e3a]">
