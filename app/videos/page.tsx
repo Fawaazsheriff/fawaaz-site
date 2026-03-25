@@ -63,7 +63,7 @@ const PAST_EPISODES = [
 
 // Custom Hover Overlay Component
 const VideoHoverOverlay = () => (
-    <div className="absolute inset-0 bg-[#0d143a]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-[18px]">
+    <div className="absolute inset-0 bg-[#171a24]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-[18px]">
         <div className="bg-white text-black rounded-full px-6 py-3 flex items-center gap-2 font-bold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
             View Episode
             <div className="bg-black text-white rounded-full p-[2px]">
@@ -118,7 +118,7 @@ export default function VideosPage() {
 
                 {/* 1. FEATURED EPISODE SECTION */}
                 <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8 mb-10 md:mb-16">
-                    <h1 className="text-center text-[24px] md:text-[32px] font-black tracking-tight mb-5 md:mb-8 uppercase">
+                    <h1 className="text-center font-mono text-[14px] lg:text-[15px] text-[#555] tracking-widest mb-6 md:mb-10 uppercase">
                         FEATURED EPISODE
                     </h1>
 
@@ -135,23 +135,23 @@ export default function VideosPage() {
 
                         {/* Featured Details */}
                         <div className="flex flex-col justify-center lg:pt-1">
-                            <div className="flex items-center gap-3 mb-3">
-                                <span className="bg-black text-white text-[10px] font-bold px-3 py-[4px] rounded-full tracking-wide">
+                            <div className="flex items-center gap-3 mb-4">
+                                <span className="font-mono text-[11px] text-[#555] uppercase tracking-widest">
                                     {FEATURED_EPISODE.tag}
                                 </span>
-                                <span className="text-black/70 text-[12px]">
+                                <span className="text-[#8a8fa8] font-light text-[13px]">
                                     {FEATURED_EPISODE.date}
                                 </span>
                             </div>
 
                             <a href={`/videos/${FEATURED_EPISODE.id}`} className="group/title block">
-                                <h2 className="text-[22px] md:text-[28px] lg:text-[32px] font-bold leading-[1.15] tracking-tight mb-4 group-hover/title:text-black/70 transition-colors">
+                                <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-light leading-[1.1] tracking-[-0.02em] mb-6 text-[#111] group-hover/title:opacity-70 transition-opacity">
                                     {FEATURED_EPISODE.title}
                                 </h2>
                             </a>
 
                             <div className="flex items-center justify-between mt-1">
-                                <a href={`/videos/${FEATURED_EPISODE.id}`} className="text-[12px] md:text-[13px] font-bold flex items-center gap-2 hover:opacity-70 transition-opacity">
+                                <a href={`/videos/${FEATURED_EPISODE.id}`} className="font-mono text-[11px] text-[#555] uppercase tracking-widest flex items-center gap-2 hover:text-[#111] transition-colors">
                                     View Episode <ArrowRight size={16} />
                                 </a>
                                 <SocialIcons />
@@ -191,12 +191,12 @@ export default function VideosPage() {
                                 </a>
 
                                 {/* Meta details */}
-                                <div className="flex items-center justify-between mb-3 w-full">
+                                <div className="flex items-center justify-between mb-4 w-full">
                                     <div className="flex items-center gap-3">
-                                        <span className="bg-black text-white text-[10px] md:text-[11px] font-bold px-2 py-[2px] rounded-md tracking-wide">
+                                        <span className="font-mono text-[11px] text-[#555] uppercase tracking-widest">
                                             {ep.tag}
                                         </span>
-                                        <span className="text-black/70 text-[12px] md:text-[13px]">
+                                        <span className="text-[#8a8fa8] font-light text-[12px] md:text-[13px]">
                                             {ep.date}
                                         </span>
                                     </div>
@@ -205,7 +205,7 @@ export default function VideosPage() {
 
                                 {/* Title */}
                                 <a href={`/videos/${ep.id}`} className="group/title block">
-                                    <h3 className="text-[18px] md:text-[20px] font-bold leading-snug tracking-tight group-hover/title:text-black/70 transition-colors line-clamp-4">
+                                    <h3 className="text-[17px] md:text-[18px] lg:text-[20px] text-[#111] font-normal leading-[1.3] tracking-[-0.01em] group-hover/title:opacity-70 transition-opacity line-clamp-4">
                                         {ep.title}
                                     </h3>
                                 </a>
