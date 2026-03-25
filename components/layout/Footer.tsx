@@ -19,9 +19,9 @@ export function Footer() {
 
                 {/* Top Section */}
                 <div className="px-6 lg:px-12 pt-16 lg:pt-48 pb-16 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
-                    <h2 className="text-[28px] lg:text-[38px] font-light leading-[1.2] tracking-tight max-w-[800px]">
+                    {/* <h2 className="text-[28px] lg:text-[38px] font-light leading-[1.2] tracking-tight max-w-[800px]">
                         if you&apos;re interested, if you&apos;re a founder, investor, or operator<br className="hidden lg:block" />Reach out
-                    </h2>
+                    </h2> */}
                 </div>
 
                 {/* Horizontal Divider (Spans edge-to-edge of the 1280px bordered container) */}
@@ -49,7 +49,7 @@ export function Footer() {
                             Legal Notices & Terms of Use
                         </Link>
 
-                        <div>Designed with <span className="text-[16px] leading-none align-middle mx-1">❋</span> riddhish</div>
+                        {/* <div>Designed with <span className="text-[16px] leading-none align-middle mx-1">❋</span> riddhish</div> */}
 
                         <div className="flex items-center gap-5 text-white text-[16px]">
                             <a href="https://x.com/fawaaz_sheriff" className="hover:opacity-70 font-semibold tracking-wide flex items-center justify-center w-[20px] h-[20px]">

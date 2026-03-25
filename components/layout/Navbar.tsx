@@ -27,7 +27,7 @@ export function Navbar() {
                 </div>
 
                 {/* Links Section (Desktop) */}
-                <nav className="hidden lg:flex flex-1 items-center justify-center gap-8 px-6">
+                <nav className="hidden lg:flex flex-1 items-center justify-evenly px-6">
                     {links.map((link) => (
                         <Link
                             key={link.name}
