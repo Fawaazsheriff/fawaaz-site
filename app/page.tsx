@@ -2,7 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { AreasOfFocus } from "@/components/sections/AreasOfFocus";
 import { Insights } from "@/components/sections/Insights";
-import { Portfolio } from "@/components/sections/Portfolio";
+// import { Portfolio } from "@/components/sections/Portfolio";
 import { ArrowUpRight } from "lucide-react";
 
 export default function Home() {
@@ -55,7 +55,7 @@ export default function Home() {
             </div>
           </section>
 
-          <Portfolio />
+          {/* <Portfolio /> */}
           <AreasOfFocus />
           <Insights />
         </main>

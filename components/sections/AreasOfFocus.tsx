@@ -15,8 +15,12 @@ export function AreasOfFocus() {
 
     return (
         <section className="w-full relative flex flex-col lg:flex-row border-b border-grid bg-white">
-            {/* Left Sidebar Empty Spacer (Matches Portfolio) */}
-            <div className="hidden lg:block w-[300px] shrink-0 border-r border-grid bg-white" />
+            {/* Left Sidebar (Formerly Empty) */}
+            <div className="hidden lg:block w-[300px] shrink-0 border-r border-grid bg-white px-8 lg:px-[40px] pt-[64px]">
+                <p className="text-[20px] text-[#444] leading-[1.4] tracking-[-0.01em] pr-2">
+                    Research-driven insights on long-term growth, structural change, and enduring businesses.
+                </p>
+            </div>
 
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col w-full bg-white px-8 lg:px-[40px] pt-[64px] pb-[80px]">

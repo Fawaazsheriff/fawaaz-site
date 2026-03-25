@@ -25,7 +25,7 @@ const insightsList = [
         imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300&h=180",
     },
     {
-        title: "Uncapped Podcast",
+        title: "Sourcery Interview at Upfront Summit",
         authors: "Featuring Coatue's Thomas Laffont",
         linkText: "Learn more",
         imageSrc: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=300&h=180",
@@ -34,39 +34,41 @@ const insightsList = [
 
 export function Insights() {
     return (
-        <section className="w-full relative flex flex-col lg:flex-row bg-white overflow-hidden">
+        <section className="w-full relative flex flex-col lg:flex-row bg-white overflow-hidden border-t border-[#efefef]">
 
-            {/* ─── LEFT: Dark Featured Panel ─── */}
-            <div className="w-full lg:w-[300px] shrink-0 bg-[#171a24] text-white flex flex-col justify-between min-h-[380px] lg:min-h-[500px] border-r border-[#2a2e3a]">
-                {/* Top content */}
-                <div className="p-8 lg:p-[40px]">
-                    <p className="text-[#8a8fa8] text-[14px] lg:text-[16px] tracking-tight mb-2 font-light">
-                        {featuredInsight.date}
-                    </p>
-                    <h2 className="text-[28px] lg:text-[34px] leading-[1.15] font-light tracking-[-0.02em] whitespace-pre-line mb-8">
-                        {featuredInsight.title}
-                    </h2>
+            {/* ─── LEFT: Dark Featured Panel Container ─── */}
+            <div className="w-full lg:w-1/2 shrink-0 bg-white flex items-center justify-center p-8 lg:p-[60px] border-r border-[#efefef]">
+                <div className="w-full max-w-[480px] aspect-square bg-[#171a24] text-white flex flex-col justify-between">
+                    {/* Top content */}
+                    <div className="p-8 lg:p-[40px]">
+                        <p className="text-[#8a8fa8] text-[16px] tracking-tight mb-2 font-light">
+                            {featuredInsight.date}
+                        </p>
+                        <h2 className="text-[32px] lg:text-[40px] leading-[1.1] font-light tracking-[-0.02em] whitespace-pre-line mb-8">
+                            {featuredInsight.title}
+                        </h2>
 
-                    {/* Headshots row */}
-                    <div className="flex flex-wrap gap-3">
-                        {featuredInsight.headshots.map((src, idx) => (
-                            <div key={idx} className="w-[58px] h-[68px] lg:w-[65px] lg:h-[75px] rounded-[5px] overflow-hidden bg-gray-800 shadow-md">
-                                <img src={src} alt="Presenter" className="w-full h-full object-cover" />
-                            </div>
-                        ))}
+                        {/* Headshots row */}
+                        <div className="flex flex-wrap gap-[10px]">
+                            {featuredInsight.headshots.map((src, idx) => (
+                                <div key={idx} className="w-[60px] h-[70px] lg:w-[75px] lg:h-[85px] rounded-[4px] overflow-hidden bg-gray-800 shadow-sm">
+                                    <img src={src} alt="Presenter" className="w-full h-full object-cover" />
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                {/* Bottom link */}
-                <div className="px-8 lg:px-[40px] pb-8 lg:pb-10 border-t border-[#2a2e3a] pt-5">
-                    <a href="#" className="text-[13px] lg:text-[14px] font-medium tracking-wide underline underline-offset-2 hover:text-[#a0a0a0] transition-colors">
-                        {featuredInsight.bottomText}
-                    </a>
+                    {/* Bottom link */}
+                    <div className="px-8 lg:px-[40px] pb-8 lg:pb-[40px]">
+                        <span className="text-[14px] lg:text-[15px] font-medium tracking-wide">
+                            {featuredInsight.bottomText}
+                        </span>
+                    </div>
                 </div>
             </div>
 
             {/* ─── RIGHT: Insight List ─── */}
-            <div className="flex-1 w-full bg-white flex flex-col divide-y divide-[#efefef]">
+            <div className="flex-1 w-full lg:w-1/2 bg-white flex flex-col divide-y divide-[#efefef]">
                 {insightsList.map((item, idx) => (
                     <a
                         href="#"
@@ -74,12 +76,12 @@ export function Insights() {
                         className="group flex flex-col sm:flex-row gap-5 lg:gap-8 px-6 lg:px-[40px] py-8 hover:bg-[#fafafa] transition-colors"
                     >
                         {/* Thumbnail */}
-                        <div className="w-full sm:w-[180px] md:w-[200px] shrink-0 h-[120px] bg-[#1a1f2e] overflow-hidden relative flex items-center justify-center">
+                        <div className="w-full sm:w-[220px] lg:w-[260px] shrink-0 h-[140px] lg:h-[150px] bg-[#1a1f2e] overflow-hidden relative flex items-center justify-center">
                             {item.isDarkPlaceholder ? (
-                                <div className="text-center px-4 flex flex-col items-center justify-center">
+                                <div className="text-center px-4 flex flex-col items-center justify-center w-full h-full bg-[#1e2332]">
                                     <div className="text-white font-light tracking-wide leading-[1.3] text-center">
-                                        <span className="font-medium text-[18px] block mb-1">CTEK</span>
-                                        <span className="text-[10px] uppercase tracking-wider block leading-tight">
+                                        <span className="font-normal text-[22px] block mb-1">CTEK</span>
+                                        <span className="text-[10px] uppercase tracking-wider block leading-tight text-[#c0c0c0]">
                                             Coatue Innovative<br />Strategies Fund
                                         </span>
                                     </div>
@@ -96,24 +98,24 @@ export function Insights() {
                         </div>
 
                         {/* Content */}
-                        <div className="flex-1 flex flex-col justify-between py-0 sm:py-1">
+                        <div className="flex-1 flex flex-col justify-between py-1">
                             <div>
-                                <h3 className="text-[16px] lg:text-[17px] text-[#111] leading-[1.4] mb-3 font-normal tracking-[-0.01em] group-hover:text-[var(--color-tribe-blue)] transition-colors">
+                                <h3 className="text-[18px] lg:text-[20px] text-[#111] leading-[1.3] mb-4 font-normal tracking-tight group-hover:text-[var(--color-tribe-blue)] transition-colors">
                                     {item.title}
                                 </h3>
                                 {item.authors && (
-                                    <p className="text-[12px] text-[#555] flex items-start gap-2">
-                                        <span className="mt-[5px] w-[5px] h-[5px] rounded-full bg-[#555] inline-block shrink-0" />
+                                    <p className="text-[13px] text-[#111] flex items-start gap-[8px]">
+                                        <span className="mt-[6px] w-[5px] h-[5px] rounded-full bg-[#111] inline-block shrink-0" />
                                         <span className="leading-[1.4]">{item.authors}</span>
                                     </p>
                                 )}
                             </div>
 
                             <div className="mt-5 inline-flex items-center gap-3 text-[12px] font-mono text-[#555] group-hover:text-[#111] transition-colors">
-                                <div className="relative w-[40px] h-[1px] bg-[#999] group-hover:bg-[#111] transition-colors">
+                                <div className="relative w-[36px] h-[1px] bg-[#999] group-hover:bg-[#111] transition-colors">
                                     <span className="absolute right-0 top-1/2 -translate-y-1/2 w-[5px] h-[5px] border-r border-t border-[#999] group-hover:border-[#111] rotate-45 transform translate-x-[1px]" />
                                 </div>
-                                {item.linkText}
+                                <span className="uppercase tracking-widest text-[11px]">{item.linkText}</span>
                             </div>
                         </div>
                     </a>
