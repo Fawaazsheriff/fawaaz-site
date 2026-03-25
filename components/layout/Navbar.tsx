@@ -32,7 +32,7 @@ export function Navbar() {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className="text-[11px] font-medium tracking-[1.8px] text-[var(--color-tribe-gray)] hover:text-black transition-colors"
+                            className="text-[13px] font-medium tracking-[1.8px] text-black hover:text-black transition-colors"
                         >
                             {link.name}
                         </Link>
@@ -59,7 +59,7 @@ export function Navbar() {
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full py-6 px-8 border-b border-grid text-[14px] font-bold tracking-[2px] text-black uppercase hover:bg-gray-50 transition-colors"
+                                className="w-full py-6 px-8 border-b border-grid text-[16px] font-bold tracking-[2px] text-black uppercase hover:bg-gray-50 transition-colors"
                             >
                                 {link.name}
                             </Link>

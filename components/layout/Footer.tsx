@@ -6,10 +6,10 @@ import { ArrowUpRight } from "lucide-react";
 
 export function Footer() {
     const links = [
-        { name: "HOME", href: "#" },
-        { name: "INSIGHTS", href: "#" },
-        { name: "VIDEOS", href: "#" },
-        { name: "COMPANIES", href: "#" },
+        { name: "HOME", href: "/" },
+        { name: "INSIGHTS", href: "/insights" },
+        { name: "VIDEOS", href: "/videos" },
+        { name: "COMPANIES", href: "/company" },
     ];
 
     return (
