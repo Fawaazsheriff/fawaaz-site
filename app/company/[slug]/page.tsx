@@ -128,7 +128,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
                             <h2 className="text-[24px] font-normal tracking-tight text-[#171a24] mb-2">
                                 About {company.title}
                             </h2>
-                            {company.body.map((paragraph, idx) => (
+                            {company.body.map((paragraph: string, idx: number) => (
                                 <p key={idx} className="text-[16px] text-[#333] leading-[1.8] font-light">
                                     {paragraph}
                                 </p>
