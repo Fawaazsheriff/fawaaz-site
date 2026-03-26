@@ -16,21 +16,34 @@ const insightsList = [
         title: "Investing in innovation through public and private markets with responsible risk management",
         linkText: "Visit CoatueCTEK.com",
         isDarkPlaceholder: true,
-        placeholderText: "CTEK Coatue Innovative Strategies Fund"
     },
     {
         title: "Our Partnership with Anthropic: Enterprise Intelligence has Liftoff",
         authors: "Thomas Laffont, Lucas Swisher, Jade Lai, Abhi Srinivas",
         linkText: "Learn more",
-        imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300&h=180",
+        imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800&h=500",
     },
     {
         title: "Sourcery Interview at Upfront Summit",
         authors: "Featuring Coatue's Thomas Laffont",
         linkText: "Learn more",
-        imageSrc: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=300&h=180",
+        imageSrc: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=800&h=500",
     }
 ];
+
+// Exact SVG arrow from the original Coatue website
+const ArrowSVG = () => (
+    <svg
+        className="relative top-[1px] mr-[18px] h-auto w-[46px] shrink-0 transition-transform duration-200 ease-in-out group-hover:translate-x-[4px]"
+        width="48"
+        height="13"
+        viewBox="0 0 48 13"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M0 6.5H47M47 6.5L41.5 1M47 6.5L41.5 12" stroke="currentColor" />
+    </svg>
+);
 
 export function Insights() {
     return (
@@ -68,59 +81,116 @@ export function Insights() {
             </div>
 
             {/* ─── RIGHT: Insight List ─── */}
-            <div className="flex-1 w-full lg:w-1/2 bg-white flex flex-col divide-y divide-[#efefef]">
+            {/*
+                On lg: the section row height is set by the left panel (aspect-square card).
+                The ul fills that full height (h-full via stretch), each li gets flex-1
+                so all 3 items share the height equally. py-0 at lg removes padding bloat.
+            */}
+            <ul className="flex flex-col flex-1 w-full lg:w-1/2 bg-white">
                 {insightsList.map((item, idx) => (
-                    <a
-                        href="#"
+                    <li
                         key={idx}
-                        className="group flex flex-col sm:flex-row gap-6 lg:gap-10 px-6 lg:px-[48px] py-[32px] hover:bg-[#fafafa] transition-colors"
+                        className={[
+                            // spacing & border
+                            "relative flex-1",
+                            "border-t border-[#e0e0e0]",
+                            idx === insightsList.length - 1 ? "border-b border-[#e0e0e0]" : "",
+                            // padding: generous on mobile/tablet, NONE on lg (height is fixed by flex-1)
+                            "pt-[32px] pb-[40px] md:py-[24px] lg:py-0",
+                            "px-6 lg:px-[48px]",
+                            // center content vertically at lg
+                            "flex items-center",
+                        ].join(" ")}
                     >
-                        {/* Thumbnail */}
-                        <div className="w-full sm:w-[240px] shrink-0 aspect-[16/9] bg-[#1a1f2e] overflow-hidden relative flex items-center justify-center rounded-[2px]">
-                            {item.isDarkPlaceholder ? (
-                                <div className="text-center px-4 flex flex-col items-center justify-center w-full h-full bg-[#1e2332]">
-                                    <div className="text-white font-light tracking-wide leading-[1.3] text-center">
-                                        <span className="font-normal text-[22px] block mb-1">CTEK</span>
-                                        <span className="text-[10px] uppercase tracking-wider block leading-tight text-[#c0c0c0]">
-                                            Coatue Innovative<br />Strategies Fund
-                                        </span>
+                        <a
+                            href="#"
+                            className="no-underline group w-full"
+                            title={item.title}
+                        >
+                            {/* 10-col grid: image 5 cols, content 5 cols — only at md+ */}
+                            <article className="md:grid md:grid-cols-10 md:gap-x-[16px]">
+
+                                {/* ── Thumbnail — 4 of 10 cols (smaller) ── */}
+                                <div className="
+                                    relative overflow-hidden bg-[#e8e8e8]
+                                    aspect-[334/206]
+                                    md:col-span-4 md:mr-[10px] md:aspect-[318/192]
+                                ">
+                                    {item.isDarkPlaceholder ? (
+                                        <div className="flex flex-col items-center justify-center w-full h-full bg-[#1e2332] text-white">
+                                            <span className="font-normal text-[18px] tracking-[0.1em]">CTEK</span>
+                                            <span className="text-[9px] uppercase tracking-wider leading-tight text-[#aaaaaa] text-center mt-[6px]">
+                                                Coatue Innovative<br />Strategies Fund
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        item.imageSrc && (
+                                            <img
+                                                src={item.imageSrc}
+                                                alt=""
+                                                className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                        )
+                                    )}
+                                </div>
+
+                                {/* ── Content — 6 of 10 cols, arrow pushed to bottom ── */}
+                                <div className="
+                                    mt-[20px]
+                                    md:col-span-6 md:col-start-5 md:ml-[10px] md:mt-0 md:flex
+                                ">
+                                    <div className="flex w-full flex-col justify-between gap-[8px] md:max-w-[538px]">
+
+                                        {/* Top group: title + author */}
+                                        <div className="flex flex-col gap-[8px]">
+                                            {/* Title — underlines on hover with medium speed */}
+                                            <h3 className="
+                                                text-[18px] leading-[1.3]
+                                                md:text-[20px] md:leading-[1.2]
+                                                lg:text-[15px] xl:text-[18px]
+                                                font-normal text-[#111]
+                                                underline-offset-[3px] decoration-[#111] decoration-[1.5px]
+                                                transition-all duration-300
+                                                group-hover:underline
+                                            ">
+                                                {item.title}
+                                            </h3>
+
+                                            {/* Author */}
+                                            {item.authors && (
+                                                <address className="
+                                                    not-italic
+                                                    text-[14px] leading-[1.2] lg:text-[12px] xl:text-[14px]
+                                                    text-[#333]
+                                                    before:relative before:-top-[1px] before:mr-[10px]
+                                                    before:inline-block before:h-[7px] before:w-[7px]
+                                                    before:rounded-full before:bg-[#111] before:align-middle
+                                                    before:content-['']
+                                                ">
+                                                    {item.authors}
+                                                </address>
+                                            )}
+                                        </div>
+
+                                        {/* Arrow + link text — sits at the bottom via justify-between */}
+                                        <div className="
+                                            flex items-center font-mono
+                                            text-[12px] lg:text-[10px] xl:text-[12px]
+                                            text-[#111]
+                                        ">
+                                            <ArrowSVG />
+                                            <span className="tracking-wide">{item.linkText}</span>
+                                        </div>
+
                                     </div>
                                 </div>
-                            ) : (
-                                item.imageSrc && (
-                                    <img
-                                        src={item.imageSrc}
-                                        alt=""
-                                        className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500"
-                                    />
-                                )
-                            )}
-                        </div>
 
-                        {/* Content */}
-                        <div className="flex-1 flex flex-col justify-between py-1">
-                            <div>
-                                <h3 className="text-[18px] lg:text-[20px] text-[#111] leading-[1.35] mb-4 font-normal tracking-[-0.01em] group-hover:text-[var(--color-tribe-blue)] transition-colors">
-                                    {item.title}
-                                </h3>
-                                {item.authors && (
-                                    <p className="text-[13px] text-[#222] flex items-start gap-[8px]">
-                                        <span className="mt-[7px] w-[4px] h-[4px] rounded-full bg-[#111] inline-block shrink-0" />
-                                        <span className="leading-[1.4]">{item.authors}</span>
-                                    </p>
-                                )}
-                            </div>
-
-                            <div className="mt-5 inline-flex items-center gap-3 text-[12px] font-mono text-[#555] group-hover:text-[#111] transition-colors">
-                                <div className="relative w-[36px] h-[1px] bg-[#999] group-hover:bg-[#111] transition-colors">
-                                    <span className="absolute right-0 top-1/2 -translate-y-1/2 w-[5px] h-[5px] border-r border-t border-[#999] group-hover:border-[#111] rotate-45 transform translate-x-[1px]" />
-                                </div>
-                                <span className="uppercase tracking-widest text-[11px]">{item.linkText}</span>
-                            </div>
-                        </div>
-                    </a>
+                            </article>
+                        </a>
+                    </li>
                 ))}
-            </div>
+            </ul>
+
         </section>
     );
 }
