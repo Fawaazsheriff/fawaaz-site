@@ -1,65 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
 
-// Mock Data
-const FEATURED_EPISODE = {
-    id: "featured-1",
-    title: "ANTHROPIC VS THE PENTAGON: WHO WINS | OPENAI'S $110BN MEGA ROUND | CURSOR HITS $2BN IN ARR",
-    date: "Mar 5, 2026",
-    tag: "20VC",
-    imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=3149&auto=format&fit=crop", // Placeholder
-};
-
-const PAST_EPISODES = [
-    {
-        id: "ep-1",
-        title: "Monday.com CEO on Is SaaS Dead: Will Everything Be Vibe Coded | Will Systems of Record Become Valueless Databases in an Agentic World",
-        date: "Mar 2, 2026",
-        tag: "20VC",
-        imageUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=3174&auto=format&fit=crop", // Placeholder
-    },
-    {
-        id: "ep-2",
-        title: "Why Cursor is Dead? An AI Tsunami is Coming & You Need to Prepare",
-        date: "Feb 28, 2026",
-        tag: "20VC",
-        imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop", // Placeholder
-    },
-    {
-        id: "ep-3",
-        title: "Anthropic Wipes Billions Off Markets | Citrini Research Breakdown: Agents, Ghost GDP, Consumer Spend | Figma Earnings Beat",
-        date: "Feb 26, 2026",
-        tag: "20VC",
-        imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=3000&auto=format&fit=crop", // Placeholder
-    },
-    {
-        id: "ep-4",
-        title: "Inside Coatue's $70BN Machine: Why Price Matters Least | Why Mega Markets are the Most Important | How Mega Funds Work",
-        date: "Feb 23, 2026",
-        tag: "20VC",
-        imageUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=3174&auto=format&fit=crop", // Placeholder
-    },
-    {
-        id: "ep-5",
-        title: "Codex vs Claude Code vs Cursor: Who Wins, Who Loses | Will All Coding Be Automated - Do We Need PMs | The Real Bull Case for Devin",
-        date: "Feb 21, 2026",
-        tag: "20Product",
-        imageUrl: "https://images.unsplash.com/photo-1566492031525-337190ca6469?q=80&w=3264&auto=format&fit=crop", // Placeholder
-    },
-    {
-        id: "ep-6",
-        title: "Anthropic Raises $30BN at $380BN Valuation | Thrive Raises New $10BN Fund | OpenAI Buys OpenClaw | Stripe Raises at $250BN",
-        date: "Feb 19, 2026",
-        tag: "20VC",
-        imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=3174&auto=format&fit=crop", // Placeholder
-    }
-];
+interface Video {
+    _id: string;
+    title: string;
+    date: string;
+    tag: string;
+    imageUrl: string;
+    youtubeId?: string;
+    description?: string;
+    featured: boolean;
+}
 
 // Custom Hover Overlay Component
 const VideoHoverOverlay = () => (
@@ -93,7 +50,6 @@ const SocialIcons = () => (
 
 // Fallback Image component for missing/broken URLs
 const ThumbnailImage = ({ src, alt, priority = false }: { src?: string, alt: string, priority?: boolean }) => {
-    // A dark, elegant abstract gradient from Unsplash as the fallback
     const fallbackSrc = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop";
     const [imgSrc, setImgSrc] = useState(src || fallbackSrc);
 
@@ -110,6 +66,40 @@ const ThumbnailImage = ({ src, alt, priority = false }: { src?: string, alt: str
 };
 
 export default function VideosPage() {
+    const [videos, setVideos] = useState<Video[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchVideos();
+    }, []);
+
+    const fetchVideos = async () => {
+        try {
+            const res = await fetch("/api/videos");
+            const data = await res.json();
+            setVideos(data.videos || []);
+        } catch (error) {
+            console.error("Failed to fetch videos:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const featuredVideo = videos.find(v => v.featured);
+    const regularVideos = videos.filter(v => !v.featured);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex flex-col w-full bg-white relative font-sans">
+                <Navbar />
+                <main className="flex-1 w-full flex items-center justify-center">
+                    <p className="text-gray-500">Loading videos...</p>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen flex flex-col w-full bg-white relative font-sans">
             <Navbar />
@@ -117,48 +107,50 @@ export default function VideosPage() {
             <main className="flex-1 w-full pt-[64px] md:pt-[80px] pb-28">
 
                 {/* 1. FEATURED EPISODE SECTION */}
-                <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8 mb-10 md:mb-16">
-                    <h1 className="text-center font-mono text-[14px] lg:text-[15px] text-[#555] tracking-widest mb-6 md:mb-10 uppercase">
-                        FEATURED EPISODE
-                    </h1>
+                {featuredVideo && (
+                    <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8 mb-10 md:mb-16">
+                        <h1 className="text-center font-mono text-[14px] lg:text-[15px] text-[#555] tracking-widest mb-6 md:mb-10 uppercase">
+                            FEATURED EPISODE
+                        </h1>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-start">
-                        {/* Featured Image */}
-                        <a href={`/videos/${FEATURED_EPISODE.id}`} className="group relative block w-full aspect-[16/10] md:aspect-[3/2] rounded-[18px] overflow-hidden bg-gray-100 lg:max-w-[520px] lg:justify-self-end">
-                            <ThumbnailImage
-                                src={FEATURED_EPISODE.imageUrl}
-                                alt={FEATURED_EPISODE.title}
-                                priority
-                            />
-                            <VideoHoverOverlay />
-                        </a>
-
-                        {/* Featured Details */}
-                        <div className="flex flex-col justify-center lg:pt-1">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="font-mono text-[11px] text-[#555] uppercase tracking-widest">
-                                    {FEATURED_EPISODE.tag}
-                                </span>
-                                <span className="text-[#8a8fa8] font-light text-[13px]">
-                                    {FEATURED_EPISODE.date}
-                                </span>
-                            </div>
-
-                            <a href={`/videos/${FEATURED_EPISODE.id}`} className="group/title block">
-                                <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-light leading-[1.1] tracking-[-0.02em] mb-6 text-[#111] group-hover/title:opacity-70 transition-opacity">
-                                    {FEATURED_EPISODE.title}
-                                </h2>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-start">
+                            {/* Featured Image */}
+                            <a href={`/videos/${featuredVideo._id}`} className="group relative block w-full aspect-[16/10] md:aspect-[3/2] rounded-[18px] overflow-hidden bg-gray-100 lg:max-w-[520px] lg:justify-self-end">
+                                <ThumbnailImage
+                                    src={featuredVideo.imageUrl}
+                                    alt={featuredVideo.title}
+                                    priority
+                                />
+                                <VideoHoverOverlay />
                             </a>
 
-                            <div className="flex items-center justify-between mt-1">
-                                <a href={`/videos/${FEATURED_EPISODE.id}`} className="font-mono text-[11px] text-[#555] uppercase tracking-widest flex items-center gap-2 hover:text-[#111] transition-colors">
-                                    View Episode <ArrowRight size={16} />
+                            {/* Featured Details */}
+                            <div className="flex flex-col justify-center lg:pt-1">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="font-mono text-[11px] text-[#555] uppercase tracking-widest">
+                                        {featuredVideo.tag}
+                                    </span>
+                                    <span className="text-[#8a8fa8] font-light text-[13px]">
+                                        {featuredVideo.date}
+                                    </span>
+                                </div>
+
+                                <a href={`/videos/${featuredVideo._id}`} className="group/title block">
+                                    <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-light leading-[1.1] tracking-[-0.02em] mb-6 text-[#111] group-hover/title:opacity-70 transition-opacity">
+                                        {featuredVideo.title}
+                                    </h2>
                                 </a>
-                                <SocialIcons />
+
+                                <div className="flex items-center justify-between mt-1">
+                                    <a href={`/videos/${featuredVideo._id}`} className="font-mono text-[11px] text-[#555] uppercase tracking-widest flex items-center gap-2 hover:text-[#111] transition-colors">
+                                        View Episode <ArrowRight size={16} />
+                                    </a>
+                                    <SocialIcons />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                )}
 
                 {/* 2. FILTER & SEARCH BAR */}
                 <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8 mb-12">
@@ -179,10 +171,10 @@ export default function VideosPage() {
                 {/* 3. EPISODES GRID SECTION */}
                 <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
-                        {PAST_EPISODES.map((ep) => (
-                            <div key={ep.id} className="flex flex-col w-full">
+                        {regularVideos.map((ep) => (
+                            <div key={ep._id} className="flex flex-col w-full">
                                 {/* Thumbnail */}
-                                <a href={`/videos/${ep.id}`} className="group relative block w-full aspect-[16/10] rounded-[24px] overflow-hidden bg-gray-100 mb-4 isolate">
+                                <a href={`/videos/${ep._id}`} className="group relative block w-full aspect-[16/10] rounded-[24px] overflow-hidden bg-gray-100 mb-4 isolate">
                                     <ThumbnailImage
                                         src={ep.imageUrl}
                                         alt={ep.title}
@@ -204,7 +196,7 @@ export default function VideosPage() {
                                 </div>
 
                                 {/* Title */}
-                                <a href={`/videos/${ep.id}`} className="group/title block">
+                                <a href={`/videos/${ep._id}`} className="group/title block">
                                     <h3 className="text-[17px] md:text-[18px] lg:text-[20px] text-[#111] font-normal leading-[1.3] tracking-[-0.01em] group-hover/title:opacity-70 transition-opacity line-clamp-4">
                                         {ep.title}
                                     </h3>
@@ -212,6 +204,12 @@ export default function VideosPage() {
                             </div>
                         ))}
                     </div>
+
+                    {regularVideos.length === 0 && !featuredVideo && (
+                        <div className="text-center py-20 text-gray-500">
+                            No videos available yet.
+                        </div>
+                    )}
                 </section>
 
             </main>

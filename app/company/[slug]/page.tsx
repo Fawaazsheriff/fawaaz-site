@@ -3,17 +3,18 @@ import Link from "next/link";
 import { ArrowLeft, Link2, Linkedin, Globe } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { companies } from "../data";
+import { connectDB } from "@/lib/mongodb";
+import Company from "@/lib/models/Company";
 
-// Generate static params for all companies
-export async function generateStaticParams() {
-    return companies.map((company) => ({ slug: company.slug }));
-}
-
-export default async function CompanyPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function CompanyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const company = companies.find((c) => c.slug === slug);
-    if (!company) notFound();
+    
+    await connectDB();
+    const companyData = await Company.findOne({ slug }).lean();
+    
+    if (!companyData) notFound();
+    
+    const company = JSON.parse(JSON.stringify(companyData));
 
     return (
         <div className="min-h-screen flex flex-col w-full bg-white font-aspekta">
@@ -92,20 +93,34 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
 
                             {/* Company Links */}
                             <div>
-                                <a href="#" className="inline-flex items-center gap-2 text-[14px] font-medium text-[#111] hover:text-[#3847FF] transition-colors">
-                                    <Globe className="w-4 h-4" />
-                                    Visit website
-                                </a>
+                                {company.websiteUrl ? (
+                                    <a 
+                                        href={company.websiteUrl} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 text-[14px] font-medium text-[#111] hover:text-[#3847FF] transition-colors"
+                                    >
+                                        <Globe className="w-4 h-4" />
+                                        Visit website
+                                    </a>
+                                ) : (
+                                    <span className="inline-flex items-center gap-2 text-[14px] text-gray-400">
+                                        <Globe className="w-4 h-4" />
+                                        No website
+                                    </span>
+                                )}
                             </div>
 
                             {/* Divider */}
                             <div className="w-full h-px bg-gray-200" />
 
                             {/* Connect */}
-                            <div>
-                                <p className="text-[14px] font-semibold text-[#111] mb-3">Partnering since</p>
-                                <p className="text-[14px] text-[#555]">2024</p>
-                            </div>
+                            {company.partneringSince && (
+                                <div>
+                                    <p className="text-[14px] font-semibold text-[#111] mb-3">Partnering since</p>
+                                    <p className="text-[14px] text-[#555]">{company.partneringSince}</p>
+                                </div>
+                            )}
                         </aside>
 
                         {/* COMPANY BODY */}
