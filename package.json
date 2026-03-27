@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx scripts/seed-all.ts",
+    "seed": "npm run seed:videos && npm run seed:companies && npm run seed:insights",
     "seed:videos": "tsx scripts/seed-videos.ts",
-    "seed:companies": "tsx scripts/seed-companies.ts"
+    "seed:companies": "tsx scripts/seed-companies.ts",
+    "seed:insights": "tsx scripts/seed-insights.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",

@@ -1,38 +1,14 @@
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { connectDB } from "@/lib/mongodb";
+import Insight from "@/lib/models/Insight";
 
-const insightItems = [
-    {
-        id: 1,
-        date: "12.09.2025",
-        title: "BofA's Let's Talk Alts: Investing in Artificial Intelligence",
-        featuring: "Featuring Fawaz's Philippe Laffont",
-        linkText: "Visit ml.com",
-        imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop",
-        slug: "venture-capital-restarts",
-    },
-    {
-        id: 2,
-        date: "12.07.2025",
-        title: "HBS Investment Conference",
-        featuring: "Featuring Fawaz's Michael Barton Jr.",
-        linkText: "Learn more",
-        imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
-        slug: "ai-native-companies-compounding-growth",
-    },
-    {
-        id: 3,
-        date: "11.24.2025",
-        title: "Why We're Doubling Down on Revolut",
-        featuring: "Brendan O'Boyle, Rohan Bharvani, Lucas Swisher",
-        linkText: "Learn more",
-        imageUrl: "https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=800&auto=format&fit=crop",
-        slug: "public-market-signals-2026",
-    },
-];
+export default async function InsightsPage() {
+    await connectDB();
+    const insightsData = await Insight.find().lean();
+    const insights = JSON.parse(JSON.stringify(insightsData));
 
-export default function InsightsPage() {
     return (
         <div className="min-h-screen flex flex-col w-full bg-[#f9f9f9] relative">
             <Navbar />
@@ -57,9 +33,9 @@ export default function InsightsPage() {
 
                     {/* Insight Rows */}
                     <div className="flex flex-col divide-y divide-[#1f2937]">
-                        {insightItems.map((item) => (
+                        {insights.map((item: any) => (
                             <Link
-                                key={item.id}
+                                key={item._id}
                                 href={`/insights/${item.slug}`}
                                 className="group flex flex-col sm:flex-row gap-6 lg:gap-10 py-8 md:py-10"
                             >
@@ -76,7 +52,7 @@ export default function InsightsPage() {
                                 <div className="flex flex-col justify-between flex-1 py-0 sm:py-1 sm:pl-6 border-t sm:border-t-0 border-[#1f2937]">
                                     <div>
                                         {/* Date */}
-                                        <p className="text-[12px] text-[#1f2937] font-mono tracking-[0.18em] mb-2">{item.date}</p>
+                                        <p className="text-[12px] text-[#1f2937] font-mono tracking-[0.18em] mb-2">{item.publishDate}</p>
 
                                         {/* Title */}
                                         <h3 className="text-[18px] md:text-[20px] font-medium leading-[1.35] text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors mb-3 tracking-[-0.01em]">
@@ -86,7 +62,7 @@ export default function InsightsPage() {
                                         {/* Bullet info */}
                                         <p className="flex items-start gap-2 text-[13px] text-[#0F172A] leading-[1.5]">
                                             <span className="mt-[6px] w-[5px] h-[5px] rounded-full bg-[#0F172A] shrink-0 inline-block" />
-                                            {item.featuring}
+                                            {item.authors.map((a: any) => a.name).join(", ")}
                                         </p>
                                     </div>
 
@@ -95,11 +71,17 @@ export default function InsightsPage() {
                                         <div className="relative w-[40px] h-[1px] bg-[#0F172A] group-hover:bg-[#1E3A8A] transition-colors">
                                             <span className="absolute right-0 top-1/2 -translate-y-1/2 w-[5px] h-[5px] border-r border-t border-[#0F172A] group-hover:border-[#1E3A8A] rotate-45 transform translate-x-[1px]" />
                                         </div>
-                                        {item.linkText}
+                                        Learn more
                                     </div>
                                 </div>
                             </Link>
                         ))}
+
+                        {insights.length === 0 && (
+                            <div className="text-center py-20 text-gray-500">
+                                No insights yet. Add insights from admin dashboard.
+                            </div>
+                        )}
                     </div>
 
                     {/* Load More */}

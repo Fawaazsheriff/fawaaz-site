@@ -3,17 +3,18 @@ import Link from "next/link";
 import { ArrowLeft, Link2, Linkedin } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { articles } from "../data";
-
-// Generate static params for all articles
-export async function generateStaticParams() {
-    return articles.map((article) => ({ slug: article.slug }));
-}
+import { connectDB } from "@/lib/mongodb";
+import Insight from "@/lib/models/Insight";
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const article = articles.find((a) => a.slug === slug);
-    if (!article) notFound();
+    
+    await connectDB();
+    const insightData = await Insight.findOne({ slug }).lean();
+    
+    if (!insightData) notFound();
+    
+    const article = JSON.parse(JSON.stringify(insightData));
 
     return (
         <div className="min-h-screen flex flex-col w-full bg-white">
@@ -71,7 +72,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
                             {/* Authors */}
                             <div className="flex flex-col gap-6">
-                                {article.authors.map((author) => (
+                                {article.authors.map((author: any) => (
                                     <div key={author.name} className="flex flex-col gap-1">
                                         <div className="flex items-center gap-3 mb-1">
                                             <img
@@ -134,7 +135,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
                         {/* ARTICLE BODY */}
                         <article className="flex flex-col gap-5">
-                            {article.body.map((paragraph, idx) => (
+                            {article.body.map((paragraph: string, idx: number) => (
                                 <p key={idx} className="text-[16px] text-[#333] leading-[1.85] font-light">
                                     {paragraph}
                                 </p>

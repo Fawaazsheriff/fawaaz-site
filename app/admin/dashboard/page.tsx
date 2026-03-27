@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2, Edit, Plus, LogOut, Video as VideoIcon, Building2 } from "lucide-react";
+import { Trash2, Edit, Plus, LogOut, Video as VideoIcon, Building2, FileText } from "lucide-react";
 
 interface Video {
   _id: string;
@@ -31,7 +31,22 @@ interface Company {
   partneringSince?: string;
 }
 
-type TabType = "videos" | "companies";
+interface Insight {
+  _id: string;
+  slug: string;
+  tag: string;
+  readTime: string;
+  publishDate: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  imageUrl: string;
+  authors: { name: string; role: string; avatar: string }[];
+  youtubeId?: string;
+  body: string[];
+}
+
+type TabType = "videos" | "companies" | "insights";
 
 export default function AdminDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -39,6 +54,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>("videos");
   const [videos, setVideos] = useState<Video[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [insights, setInsights] = useState<Insight[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const router = useRouter();
@@ -63,6 +79,20 @@ export default function AdminDashboard() {
     body: [""],
     websiteUrl: "",
     partneringSince: "",
+  });
+
+  const [insightFormData, setInsightFormData] = useState({
+    slug: "",
+    tag: "",
+    readTime: "",
+    publishDate: "",
+    title: "",
+    subtitle: "",
+    excerpt: "",
+    imageUrl: "",
+    authors: [{ name: "", role: "", avatar: "" }],
+    youtubeId: "",
+    body: [""],
   });
 
   const getPreviewImage = () => {
@@ -96,8 +126,10 @@ export default function AdminDashboard() {
     if (authenticated) {
       if (activeTab === "videos") {
         fetchVideos();
-      } else {
+      } else if (activeTab === "companies") {
         fetchCompanies();
+      } else {
+        fetchInsights();
       }
     }
   }, [activeTab, authenticated]);
@@ -136,6 +168,16 @@ export default function AdminDashboard() {
       setCompanies(data.companies || []);
     } catch (error) {
       console.error("Failed to fetch companies:", error);
+    }
+  };
+
+  const fetchInsights = async () => {
+    try {
+      const res = await fetch("/api/insights");
+      const data = await res.json();
+      setInsights(data.insights || []);
+    } catch (error) {
+      console.error("Failed to fetch insights:", error);
     }
   };
 
@@ -196,6 +238,34 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleInsightSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const url = editingId ? `/api/insights/${editingId}` : "/api/insights";
+      const method = editingId ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(insightFormData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setShowForm(false);
+        setEditingId(null);
+        resetInsightForm();
+        fetchInsights();
+      } else {
+        alert(data.error || "Failed to save insight");
+      }
+    } catch (error) {
+      console.error("Failed to save insight:", error);
+    }
+  };
+
   const handleEdit = (video: Video) => {
     setFormData({
       title: video.title,
@@ -226,6 +296,24 @@ export default function AdminDashboard() {
     setShowForm(true);
   };
 
+  const handleEditInsight = (insight: Insight) => {
+    setInsightFormData({
+      slug: insight.slug,
+      tag: insight.tag,
+      readTime: insight.readTime,
+      publishDate: insight.publishDate,
+      title: insight.title,
+      subtitle: insight.subtitle,
+      excerpt: insight.excerpt,
+      imageUrl: insight.imageUrl,
+      authors: insight.authors,
+      youtubeId: insight.youtubeId || "",
+      body: insight.body,
+    });
+    setEditingId(insight._id);
+    setShowForm(true);
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this video?")) return;
 
@@ -252,6 +340,19 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDeleteInsight = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this insight?")) return;
+
+    try {
+      const res = await fetch(`/api/insights/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        fetchInsights();
+      }
+    } catch (error) {
+      console.error("Failed to delete insight:", error);
+    }
+  };
+
   const resetForm = () => {
     setFormData({
       title: "",
@@ -275,6 +376,22 @@ export default function AdminDashboard() {
       body: [""],
       websiteUrl: "",
       partneringSince: "",
+    });
+  };
+
+  const resetInsightForm = () => {
+    setInsightFormData({
+      slug: "",
+      tag: "",
+      readTime: "",
+      publishDate: "",
+      title: "",
+      subtitle: "",
+      excerpt: "",
+      imageUrl: "",
+      authors: [{ name: "", role: "", avatar: "" }],
+      youtubeId: "",
+      body: [""],
     });
   };
 
@@ -332,6 +449,21 @@ export default function AdminDashboard() {
             <Building2 className="w-4 h-4" />
             Companies
           </button>
+          <button
+            onClick={() => {
+              setActiveTab("insights");
+              setShowForm(false);
+              setEditingId(null);
+            }}
+            className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors ${
+              activeTab === "insights"
+                ? "border-black text-black"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            Insights
+          </button>
         </div>
 
         <div className="mb-6">
@@ -341,13 +473,15 @@ export default function AdminDashboard() {
               setEditingId(null);
               if (activeTab === "videos") {
                 resetForm();
-              } else {
+              } else if (activeTab === "companies") {
                 resetCompanyForm();
+              } else {
+                resetInsightForm();
               }
             }}
           >
             <Plus className="w-4 h-4 mr-2" />
-            {showForm ? "Cancel" : `Add New ${activeTab === "videos" ? "Video" : "Company"}`}
+            {showForm ? "Cancel" : `Add New ${activeTab === "videos" ? "Video" : activeTab === "companies" ? "Company" : "Insight"}`}
           </Button>
         </div>
 
@@ -614,6 +748,231 @@ export default function AdminDashboard() {
           </Card>
         )}
 
+        {activeTab === "insights" && showForm && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>{editingId ? "Edit Insight" : "Add New Insight"}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleInsightSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Title</label>
+                    <Input
+                      value={insightFormData.title}
+                      onChange={(e) => setInsightFormData({ ...insightFormData, title: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Slug (URL)</label>
+                    <Input
+                      value={insightFormData.slug}
+                      onChange={(e) => setInsightFormData({ ...insightFormData, slug: e.target.value })}
+                      placeholder="insight-title"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Tag</label>
+                    <Input
+                      value={insightFormData.tag}
+                      onChange={(e) => setInsightFormData({ ...insightFormData, tag: e.target.value })}
+                      placeholder="INSIGHTS, ANALYSIS, etc."
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Read Time</label>
+                    <Input
+                      value={insightFormData.readTime}
+                      onChange={(e) => setInsightFormData({ ...insightFormData, readTime: e.target.value })}
+                      placeholder="5 min read"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Publish Date</label>
+                    <Input
+                      value={insightFormData.publishDate}
+                      onChange={(e) => setInsightFormData({ ...insightFormData, publishDate: e.target.value })}
+                      placeholder="Mar 5, 2026"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Subtitle</label>
+                  <Input
+                    value={insightFormData.subtitle}
+                    onChange={(e) => setInsightFormData({ ...insightFormData, subtitle: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Excerpt</label>
+                  <Input
+                    value={insightFormData.excerpt}
+                    onChange={(e) => setInsightFormData({ ...insightFormData, excerpt: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Image URL</label>
+                  <Input
+                    value={insightFormData.imageUrl}
+                    onChange={(e) => setInsightFormData({ ...insightFormData, imageUrl: e.target.value })}
+                    placeholder="https://..."
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">YouTube ID (optional)</label>
+                  <Input
+                    value={insightFormData.youtubeId}
+                    onChange={(e) => setInsightFormData({ ...insightFormData, youtubeId: e.target.value })}
+                    placeholder="dQw4w9WgXcQ"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Authors</label>
+                  {insightFormData.authors.map((author, idx) => (
+                    <div key={idx} className="mb-3 p-3 border rounded-md">
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <Input
+                          value={author.name}
+                          onChange={(e) => {
+                            const newAuthors = [...insightFormData.authors];
+                            newAuthors[idx].name = e.target.value;
+                            setInsightFormData({ ...insightFormData, authors: newAuthors });
+                          }}
+                          placeholder="Author Name"
+                          required
+                        />
+                        <Input
+                          value={author.role}
+                          onChange={(e) => {
+                            const newAuthors = [...insightFormData.authors];
+                            newAuthors[idx].role = e.target.value;
+                            setInsightFormData({ ...insightFormData, authors: newAuthors });
+                          }}
+                          placeholder="Role/Title"
+                          required
+                        />
+                        <Input
+                          value={author.avatar}
+                          onChange={(e) => {
+                            const newAuthors = [...insightFormData.authors];
+                            newAuthors[idx].avatar = e.target.value;
+                            setInsightFormData({ ...insightFormData, authors: newAuthors });
+                          }}
+                          placeholder="Avatar URL"
+                          required
+                        />
+                      </div>
+                      {insightFormData.authors.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newAuthors = insightFormData.authors.filter((_, i) => i !== idx);
+                            setInsightFormData({ ...insightFormData, authors: newAuthors });
+                          }}
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Remove Author
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setInsightFormData({
+                        ...insightFormData,
+                        authors: [...insightFormData.authors, { name: "", role: "", avatar: "" }]
+                      });
+                    }}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Author
+                  </Button>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Body Paragraphs</label>
+                  {insightFormData.body.map((paragraph, idx) => (
+                    <div key={idx} className="mb-2 flex gap-2">
+                      <textarea
+                        className="flex-1 border rounded-md p-2 min-h-[80px]"
+                        value={paragraph}
+                        onChange={(e) => {
+                          const newBody = [...insightFormData.body];
+                          newBody[idx] = e.target.value;
+                          setInsightFormData({ ...insightFormData, body: newBody });
+                        }}
+                        placeholder={`Paragraph ${idx + 1}`}
+                      />
+                      {insightFormData.body.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-sm"
+                          onClick={() => {
+                            const newBody = insightFormData.body.filter((_, i) => i !== idx);
+                            setInsightFormData({ ...insightFormData, body: newBody });
+                          }}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setInsightFormData({ ...insightFormData, body: [...insightFormData.body, ""] });
+                    }}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Paragraph
+                  </Button>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button type="submit">
+                    {editingId ? "Update Insight" : "Create Insight"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setShowForm(false);
+                      setEditingId(null);
+                      resetInsightForm();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        )}
+
         {activeTab === "videos" && (
           <div className="grid gap-4">
             {videos.map((video) => (
@@ -728,6 +1087,70 @@ export default function AdminDashboard() {
             {companies.length === 0 && (
               <div className="text-center py-12 text-gray-500">
                 No companies yet. Add your first company!
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === "insights" && (
+          <div className="grid gap-4">
+            {insights.map((insight) => (
+              <Card key={insight._id}>
+                <CardContent className="p-6">
+                  <div className="flex gap-4">
+                    <div className="w-32 h-20 bg-gray-200 rounded overflow-hidden shrink-0">
+                      <img
+                        src={insight.imageUrl}
+                        alt={insight.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xs font-mono text-gray-500">{insight.tag}</span>
+                            <span className="text-xs text-gray-400">{insight.readTime}</span>
+                            <span className="text-xs text-gray-400">{insight.publishDate}</span>
+                          </div>
+                          <h3 className="font-semibold text-lg mb-1">{insight.title}</h3>
+                          <p className="text-sm text-gray-600 mb-2">{insight.subtitle}</p>
+                          <div className="flex items-center gap-2">
+                            {insight.authors.map((author, idx) => (
+                              <span key={idx} className="text-xs text-gray-500">
+                                {author.name} ({author.role})
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button
+                            size="icon-sm"
+                            variant="outline"
+                            onClick={() => handleEditInsight(insight)}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="icon-sm"
+                            variant="destructive"
+                            onClick={() => handleDeleteInsight(insight._id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+
+            {insights.length === 0 && (
+              <div className="text-center py-12 text-gray-500">
+                No insights yet. Add your first insight!
               </div>
             )}
           </div>
