@@ -4,9 +4,27 @@ import { Footer } from "@/components/layout/Footer";
 import { connectDB } from "@/lib/mongodb";
 import Insight from "@/lib/models/Insight";
 
-export default async function InsightsPage() {
+const ITEMS_PER_PAGE = 6;
+
+export default async function InsightsPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ page?: string }>;
+}) {
+    const params = await searchParams;
+    const parsedPage = Number(params.page || "1");
+    const currentPage = Number.isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
+
     await connectDB();
-    const insightsData = await Insight.find().lean();
+    const totalItems = await Insight.countDocuments();
+    const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+    const safePage = Math.min(currentPage, totalPages);
+
+    const insightsData = await Insight.find()
+        .sort({ createdAt: -1 })
+        .skip((safePage - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE)
+        .lean();
     const insights = JSON.parse(JSON.stringify(insightsData));
 
     return (
@@ -84,15 +102,35 @@ export default async function InsightsPage() {
                         )}
                     </div>
 
-                    {/* Load More */}
-                    <div className="flex justify-center pt-10">
-                        <button
-                            type="button"
-                            className="text-[12px] sm:text-[13px] font-semibold tracking-[0.2em] uppercase text-white bg-[#0F172A] px-7 py-3 hover:bg-[#111827] transition-colors"
-                        >
-                            Load More
-                        </button>
-                    </div>
+                    {totalItems > 0 && (
+                        <div className="flex justify-center items-center gap-3 pt-10">
+                            <Link
+                                href={`/insights?page=${Math.max(1, safePage - 1)}`}
+                                aria-disabled={safePage === 1}
+                                className={`text-[12px] sm:text-[13px] font-semibold tracking-[0.1em] uppercase px-5 py-3 border border-[#0F172A] transition-colors ${
+                                    safePage === 1
+                                        ? "pointer-events-none opacity-40"
+                                        : "hover:bg-[#0F172A] hover:text-white"
+                                }`}
+                            >
+                                Previous
+                            </Link>
+                            <span className="text-[12px] sm:text-[13px] font-mono tracking-[0.08em] text-[#0F172A]">
+                                Page {safePage} of {totalPages}
+                            </span>
+                            <Link
+                                href={`/insights?page=${Math.min(totalPages, safePage + 1)}`}
+                                aria-disabled={safePage === totalPages}
+                                className={`text-[12px] sm:text-[13px] font-semibold tracking-[0.1em] uppercase px-5 py-3 border border-[#0F172A] transition-colors ${
+                                    safePage === totalPages
+                                        ? "pointer-events-none opacity-40"
+                                        : "hover:bg-[#0F172A] hover:text-white"
+                                }`}
+                            >
+                                Next
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </section>
 

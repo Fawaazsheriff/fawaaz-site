@@ -1,17 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+
+const DEFAULT_BANNER_TEXT =
+    "Fundraise Announcement: Congrats to Emergent for raising $70M from Khosla Ventures and SoftBank!";
 
 export function TopBanner() {
     const [isVisible, setIsVisible] = useState(true);
+    const [bannerText, setBannerText] = useState<string>(DEFAULT_BANNER_TEXT);
 
-    if (!isVisible) return null;
+    useEffect(() => {
+        const fetchBannerText = async () => {
+            try {
+                const res = await fetch("/api/site-settings", { cache: "no-store" });
+                if (!res.ok) return;
+
+                const data = await res.json();
+                const topBannerText = data?.settings?.topBannerText;
+                if (typeof topBannerText === "string") {
+                    setBannerText(topBannerText);
+                }
+            } catch {
+                // Keep fallback text when request fails.
+            }
+        };
+
+        fetchBannerText();
+    }, []);
+
+    if (!isVisible || !bannerText.trim()) return null;
 
     return (
-        <div className="bg-[#ff4d4f] text-white w-full py-2 px-4 flex items-center justify-center relative z-[100] text-[13px] md:text-[14px]">
+        <div className="bg-[#ff4d4f] text-white w-full py-2 px-4 flex items-center justify-center relative z-100 text-[13px] md:text-[14px]">
             <p className="font-medium tracking-wide">
-                Fundraise Announcement: Congrats to Emergent for raising $70M from Khosla Ventures and SoftBank!
+                {bannerText}
             </p>
             <button 
                 onClick={() => setIsVisible(false)}

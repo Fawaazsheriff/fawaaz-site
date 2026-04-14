@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2, Edit, Plus, LogOut, Video as VideoIcon, Building2, FileText } from "lucide-react";
+import { Trash2, Edit, Plus, LogOut, Video as VideoIcon, Building2, FileText, Settings } from "lucide-react";
 
 interface Video {
   _id: string;
@@ -46,7 +46,7 @@ interface Insight {
   body: string[];
 }
 
-type TabType = "videos" | "companies" | "insights";
+type TabType = "videos" | "companies" | "insights" | "settings";
 
 export default function AdminDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -55,6 +55,7 @@ export default function AdminDashboard() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [insights, setInsights] = useState<Insight[]>([]);
+  const [settingsSaving, setSettingsSaving] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const router = useRouter();
@@ -95,6 +96,10 @@ export default function AdminDashboard() {
     body: [""],
   });
 
+  const [settingsFormData, setSettingsFormData] = useState({
+    topBannerText: "",
+  });
+
   const getPreviewImage = () => {
     if (formData.imageUrl) return formData.imageUrl;
     if (formData.youtubeId) {
@@ -128,8 +133,10 @@ export default function AdminDashboard() {
         fetchVideos();
       } else if (activeTab === "companies") {
         fetchCompanies();
-      } else {
+      } else if (activeTab === "insights") {
         fetchInsights();
+      } else {
+        fetchSettings();
       }
     }
   }, [activeTab, authenticated]);
@@ -178,6 +185,18 @@ export default function AdminDashboard() {
       setInsights(data.insights || []);
     } catch (error) {
       console.error("Failed to fetch insights:", error);
+    }
+  };
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch("/api/site-settings");
+      const data = await res.json();
+      setSettingsFormData({
+        topBannerText: data?.settings?.topBannerText || "",
+      });
+    } catch (error) {
+      console.error("Failed to fetch settings:", error);
     }
   };
 
@@ -263,6 +282,35 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Failed to save insight:", error);
+    }
+  };
+
+  const handleSettingsSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      setSettingsSaving(true);
+      const res = await fetch("/api/site-settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settingsFormData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSettingsFormData({
+          topBannerText: data?.settings?.topBannerText || "",
+        });
+        alert("Banner settings updated successfully");
+      } else {
+        alert(data.error || "Failed to save settings");
+      }
+    } catch (error) {
+      console.error("Failed to save settings:", error);
+      alert("Failed to save settings");
+    } finally {
+      setSettingsSaving(false);
     }
   };
 
@@ -464,9 +512,24 @@ export default function AdminDashboard() {
             <FileText className="w-4 h-4" />
             Insights
           </button>
+          <button
+            onClick={() => {
+              setActiveTab("settings");
+              setShowForm(false);
+              setEditingId(null);
+            }}
+            className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors ${
+              activeTab === "settings"
+                ? "border-black text-black"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            <Settings className="w-4 h-4" />
+            Settings
+          </button>
         </div>
 
-        <div className="mb-6">
+        {activeTab !== "settings" && <div className="mb-6">
           <Button
             onClick={() => {
               setShowForm(!showForm);
@@ -483,7 +546,44 @@ export default function AdminDashboard() {
             <Plus className="w-4 h-4 mr-2" />
             {showForm ? "Cancel" : `Add New ${activeTab === "videos" ? "Video" : activeTab === "companies" ? "Company" : "Insight"}`}
           </Button>
-        </div>
+        </div>}
+
+        {activeTab === "settings" && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Site Settings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSettingsSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Top Banner Text</label>
+                  <textarea
+                    className="w-full border rounded-md p-2 min-h-30"
+                    value={settingsFormData.topBannerText}
+                    onChange={(e) =>
+                      setSettingsFormData({ ...settingsFormData, topBannerText: e.target.value })
+                    }
+                    placeholder="Enter announcement text. Leave empty to hide banner."
+                  />
+                </div>
+
+                <div className="flex gap-2">
+                  <Button type="submit" disabled={settingsSaving}>
+                    {settingsSaving ? "Saving..." : "Save Settings"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={fetchSettings}
+                    disabled={settingsSaving}
+                  >
+                    Reset
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        )}
 
         {activeTab === "videos" && showForm && (
           <Card className="mb-8">

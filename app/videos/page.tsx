@@ -66,8 +66,10 @@ const ThumbnailImage = ({ src, alt, priority = false }: { src?: string, alt: str
 };
 
 export default function VideosPage() {
+    const ITEMS_PER_PAGE = 9;
     const [videos, setVideos] = useState<Video[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         fetchVideos();
@@ -87,6 +89,9 @@ export default function VideosPage() {
 
     const featuredVideo = videos.find(v => v.featured);
     const regularVideos = videos.filter(v => !v.featured);
+    const totalPages = Math.max(1, Math.ceil(regularVideos.length / ITEMS_PER_PAGE));
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paginatedVideos = regularVideos.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
     if (loading) {
         return (
@@ -171,7 +176,7 @@ export default function VideosPage() {
                 {/* 3. EPISODES GRID SECTION */}
                 <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
-                        {regularVideos.map((ep) => (
+                        {paginatedVideos.map((ep) => (
                             <div key={ep._id} className="flex flex-col w-full">
                                 {/* Thumbnail */}
                                 <a href={`/videos/${ep._id}`} className="group relative block w-full aspect-[16/10] rounded-[24px] overflow-hidden bg-gray-100 mb-4 isolate">
@@ -208,6 +213,30 @@ export default function VideosPage() {
                     {regularVideos.length === 0 && !featuredVideo && (
                         <div className="text-center py-20 text-gray-500">
                             No videos available yet.
+                        </div>
+                    )}
+
+                    {regularVideos.length > 0 && (
+                        <div className="flex items-center justify-center gap-3 mt-10">
+                            <button
+                                type="button"
+                                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                                disabled={currentPage === 1}
+                                className="px-4 py-2 border border-gray-300 rounded text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+                            >
+                                Previous
+                            </button>
+                            <span className="text-sm text-gray-600">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                                disabled={currentPage === totalPages}
+                                className="px-4 py-2 border border-gray-300 rounded text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+                            >
+                                Next
+                            </button>
                         </div>
                     )}
                 </section>

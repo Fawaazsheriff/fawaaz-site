@@ -4,9 +4,27 @@ import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import Company from "@/lib/models/Company";
 
-export default async function CompanyPage() {
+const ITEMS_PER_PAGE = 9;
+
+export default async function CompanyPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ page?: string }>;
+}) {
+    const params = await searchParams;
+    const parsedPage = Number(params.page || "1");
+    const currentPage = Number.isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
+
     await connectDB();
-    const companiesData = await Company.find().lean();
+    const totalItems = await Company.countDocuments();
+    const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+    const safePage = Math.min(currentPage, totalPages);
+
+    const companiesData = await Company.find()
+        .sort({ createdAt: -1 })
+        .skip((safePage - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE)
+        .lean();
     const companies = JSON.parse(JSON.stringify(companiesData));
 
     return (
@@ -72,6 +90,36 @@ export default async function CompanyPage() {
                             )}
 
                         </div>
+
+                        {totalItems > 0 && (
+                            <div className="flex justify-center items-center gap-3 mt-10">
+                                <Link
+                                    href={`/company?page=${Math.max(1, safePage - 1)}`}
+                                    aria-disabled={safePage === 1}
+                                    className={`text-[12px] sm:text-[13px] font-semibold tracking-[0.1em] uppercase px-5 py-3 border border-[#1a1a1a] transition-colors ${
+                                        safePage === 1
+                                            ? "pointer-events-none opacity-40"
+                                            : "hover:bg-[#1a1a1a] hover:text-white"
+                                    }`}
+                                >
+                                    Previous
+                                </Link>
+                                <span className="text-[12px] sm:text-[13px] font-mono tracking-[0.08em] text-[#1a1a1a]">
+                                    Page {safePage} of {totalPages}
+                                </span>
+                                <Link
+                                    href={`/company?page=${Math.min(totalPages, safePage + 1)}`}
+                                    aria-disabled={safePage === totalPages}
+                                    className={`text-[12px] sm:text-[13px] font-semibold tracking-[0.1em] uppercase px-5 py-3 border border-[#1a1a1a] transition-colors ${
+                                        safePage === totalPages
+                                            ? "pointer-events-none opacity-40"
+                                            : "hover:bg-[#1a1a1a] hover:text-white"
+                                    }`}
+                                >
+                                    Next
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </section>
             </main>
