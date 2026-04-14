@@ -84,9 +84,7 @@ export default function AdminLoginPage() {
           </Button>
         </form>
 
-        <p className="text-xs text-gray-500 text-center mt-6">
-          Default: admin@fawaz.com / admin123
-        </p>
+      
       </div>
     </div>
   );

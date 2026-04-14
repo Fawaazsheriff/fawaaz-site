@@ -98,6 +98,7 @@ export default function AdminDashboard() {
 
   const [settingsFormData, setSettingsFormData] = useState({
     topBannerText: "",
+    homeInsightSlugs: [] as string[],
   });
 
   const getPreviewImage = () => {
@@ -137,6 +138,7 @@ export default function AdminDashboard() {
         fetchInsights();
       } else {
         fetchSettings();
+        fetchInsights();
       }
     }
   }, [activeTab, authenticated]);
@@ -194,10 +196,33 @@ export default function AdminDashboard() {
       const data = await res.json();
       setSettingsFormData({
         topBannerText: data?.settings?.topBannerText || "",
+        homeInsightSlugs: data?.settings?.homeInsightSlugs || [],
       });
     } catch (error) {
       console.error("Failed to fetch settings:", error);
     }
+  };
+
+  const toggleHomeInsight = (slug: string) => {
+    setSettingsFormData((prev) => {
+      const exists = prev.homeInsightSlugs.includes(slug);
+      if (exists) {
+        return {
+          ...prev,
+          homeInsightSlugs: prev.homeInsightSlugs.filter((s) => s !== slug),
+        };
+      }
+
+      if (prev.homeInsightSlugs.length >= 4) {
+        alert("You can select up to 4 insights for homepage.");
+        return prev;
+      }
+
+      return {
+        ...prev,
+        homeInsightSlugs: [...prev.homeInsightSlugs, slug],
+      };
+    });
   };
 
   const handleLogout = async () => {
@@ -301,8 +326,9 @@ export default function AdminDashboard() {
       if (res.ok) {
         setSettingsFormData({
           topBannerText: data?.settings?.topBannerText || "",
+          homeInsightSlugs: data?.settings?.homeInsightSlugs || [],
         });
-        alert("Banner settings updated successfully");
+        alert("Site settings updated successfully");
       } else {
         alert(data.error || "Failed to save settings");
       }
@@ -565,6 +591,39 @@ export default function AdminDashboard() {
                     }
                     placeholder="Enter announcement text. Leave empty to hide banner."
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Homepage Insights (first selected is featured, next 3 are on right)
+                  </label>
+                  <p className="text-xs text-gray-500 mb-3">Select up to 4 insights.</p>
+                  <div className="space-y-2 border rounded-md p-3 max-h-72 overflow-auto bg-white">
+                    {insights.length === 0 && (
+                      <p className="text-sm text-gray-500">No insights found. Create insights first.</p>
+                    )}
+
+                    {insights.map((insight) => {
+                      const checked = settingsFormData.homeInsightSlugs.includes(insight.slug);
+                      return (
+                        <label
+                          key={insight._id}
+                          className="flex items-start gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => toggleHomeInsight(insight.slug)}
+                            className="mt-1"
+                          />
+                          <span className="text-sm text-gray-800">
+                            {insight.title}
+                            <span className="block text-xs text-gray-500">/{insight.slug}</span>
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <div className="flex gap-2">

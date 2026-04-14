@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface ISiteSettings extends Document {
   key: string;
   topBannerText: string;
+  homeInsightSlugs: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -11,6 +12,7 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
   {
     key: { type: String, required: true, unique: true, default: 'main' },
     topBannerText: { type: String, default: '' },
+    homeInsightSlugs: { type: [String], default: [] },
   },
   { timestamps: true }
 );

@@ -1,35 +1,27 @@
-import React from 'react';
+import Link from "next/link";
+import { connectDB } from "@/lib/mongodb";
+import Insight from "@/lib/models/Insight";
+import SiteSettings from "@/lib/models/SiteSettings";
 
-const featuredInsight = {
-    date: "October 2025",
-    title: "Public Markets\nUpdate",
-    bottomText: "Public Markets Update Deck and Replay",
-    headshots: [
-        "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150&h=150",
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150&h=150",
-        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150&h=150"
-    ]
+const FALLBACK_CARD_IMAGE =
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800&h=500";
+const FALLBACK_HEADSHOT =
+    "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150&h=150";
+
+type InsightAuthor = {
+    name: string;
+    avatar: string;
 };
 
-const insightsList = [
-    {
-        title: "Investing in innovation through public and private markets with responsible risk management",
-        linkText: "Visit CoatueCTEK.com",
-        isDarkPlaceholder: true,
-    },
-    {
-        title: "Our Partnership with Anthropic: Enterprise Intelligence has Liftoff",
-        authors: "Thomas Laffont, Lucas Swisher, Jade Lai, Abhi Srinivas",
-        linkText: "Learn more",
-        imageSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800&h=500",
-    },
-    {
-        title: "Sourcery Interview at Upfront Summit",
-        authors: "Featuring Coatue's Thomas Laffont",
-        linkText: "Learn more",
-        imageSrc: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=800&h=500",
-    }
-];
+type InsightItem = {
+    _id?: string;
+    slug: string;
+    title: string;
+    subtitle?: string;
+    publishDate?: string;
+    imageUrl?: string;
+    authors?: InsightAuthor[];
+};
 
 // Exact SVG arrow from the original Coatue website
 const ArrowSVG = () => (
@@ -45,7 +37,69 @@ const ArrowSVG = () => (
     </svg>
 );
 
-export function Insights() {
+export async function Insights() {
+    await connectDB();
+    const settings = await SiteSettings.findOne({ key: "main" }).lean();
+    const configuredSlugsRaw = Array.isArray(settings?.homeInsightSlugs)
+        ? settings.homeInsightSlugs
+        : [];
+
+    const cleanedSlugs: string[] = configuredSlugsRaw
+        .filter((slug: unknown): slug is string => typeof slug === "string")
+        .map((slug: string) => slug.trim())
+        .filter(Boolean);
+
+    const uniqueConfiguredSlugs: string[] = Array.from(new Set<string>(cleanedSlugs)).slice(0, 4);
+
+    let orderedConfiguredInsights: any[] = [];
+    if (uniqueConfiguredSlugs.length > 0) {
+        const configuredInsights = await Insight.find({ slug: { $in: uniqueConfiguredSlugs } }).lean();
+        const configuredBySlug = new Map(
+            configuredInsights.map((item: any) => [item.slug, item])
+        );
+        orderedConfiguredInsights = uniqueConfiguredSlugs
+            .map((slug: string) => configuredBySlug.get(slug))
+            .filter(Boolean);
+    }
+
+    const remainingSlots = Math.max(0, 4 - orderedConfiguredInsights.length);
+    const fallbackInsights =
+        remainingSlots > 0
+            ? await Insight.find({
+                  slug: {
+                      $nin: orderedConfiguredInsights.map((item: any) => item.slug),
+                  },
+              })
+                  .sort({ createdAt: -1 })
+                  .limit(remainingSlots)
+                  .lean()
+            : [];
+
+    const insightsData = [...orderedConfiguredInsights, ...fallbackInsights];
+    const insights: InsightItem[] = JSON.parse(JSON.stringify(insightsData));
+    const normalizedInsights: InsightItem[] = insights.map((item: InsightItem) => ({
+        ...item,
+        imageUrl: item.imageUrl || FALLBACK_CARD_IMAGE,
+        authors: item.authors || [],
+    }));
+
+    const featuredInsight = normalizedInsights[0];
+    const insightsList = normalizedInsights.slice(1, 4);
+
+    if (!featuredInsight) {
+        return null;
+    }
+
+    const featuredHeadshots = (featuredInsight.authors || [])
+        .map((author: InsightAuthor) => author.avatar)
+        .filter(Boolean)
+        .slice(0, 3);
+    while (featuredHeadshots.length < 3) {
+        featuredHeadshots.push(FALLBACK_HEADSHOT);
+    }
+
+    const featuredBottomText = featuredInsight.subtitle || "Read insight";
+
     return (
         <section className="w-full relative flex flex-col lg:flex-row bg-white overflow-hidden border-t border-[#efefef]">
 
@@ -55,7 +109,7 @@ export function Insights() {
                     {/* Top content */}
                     <div className="p-8 lg:p-[48px]">
                         <p className="text-[#8a8fa8] text-[18px] lg:text-[20px] font-normal tracking-wide mb-[16px]">
-                            {featuredInsight.date}
+                            {featuredInsight.publishDate}
                         </p>
                         <h2 className="text-[38px] lg:text-[52px] leading-[1.05] font-light tracking-[-0.03em] whitespace-pre-line mb-[48px]">
                             {featuredInsight.title}
@@ -63,7 +117,7 @@ export function Insights() {
 
                         {/* Headshots row */}
                         <div className="flex flex-wrap gap-[16px]">
-                            {featuredInsight.headshots.map((src, idx) => (
+                            {featuredHeadshots.map((src: string, idx: number) => (
                                 <div key={idx} className="w-[70px] h-[80px] lg:w-[100px] lg:h-[110px] rounded-[8px] overflow-hidden bg-gray-800 shadow-sm">
                                     <img src={src} alt="Presenter" className="w-full h-full object-cover" />
                                 </div>
@@ -73,9 +127,12 @@ export function Insights() {
 
                     {/* Bottom link */}
                     <div className="px-8 lg:px-[48px] pb-8 lg:pb-[48px]">
-                        <span className="text-[17px] lg:text-[19px] font-bold tracking-[0.02em] hover:text-[#c0c0c0] transition-colors cursor-pointer">
-                            {featuredInsight.bottomText}
-                        </span>
+                        <Link
+                            href={`/insights/${featuredInsight.slug}`}
+                            className="text-[17px] lg:text-[19px] font-bold tracking-[0.02em] hover:text-[#c0c0c0] transition-colors"
+                        >
+                            {featuredBottomText}
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -87,9 +144,9 @@ export function Insights() {
                 so all 3 items share the height equally. py-0 at lg removes padding bloat.
             */}
             <ul className="flex flex-col flex-1 w-full lg:w-1/2 bg-white">
-                {insightsList.map((item, idx) => (
+                {insightsList.map((item: InsightItem, idx: number) => (
                     <li
-                        key={idx}
+                        key={item._id || idx}
                         className={[
                             // spacing & border
                             "relative flex-1",
@@ -102,8 +159,8 @@ export function Insights() {
                             "flex items-center",
                         ].join(" ")}
                     >
-                        <a
-                            href="#"
+                        <Link
+                            href={`/insights/${item.slug}`}
                             className="no-underline group w-full"
                             title={item.title}
                         >
@@ -116,21 +173,12 @@ export function Insights() {
                                     aspect-[334/206]
                                     md:col-span-4 md:mr-[10px] md:aspect-[318/192]
                                 ">
-                                    {item.isDarkPlaceholder ? (
-                                        <div className="flex flex-col items-center justify-center w-full h-full bg-[#1e2332] text-white">
-                                            <span className="font-normal text-[18px] tracking-[0.1em]">CTEK</span>
-                                            <span className="text-[9px] uppercase tracking-wider leading-tight text-[#aaaaaa] text-center mt-[6px]">
-                                                Coatue Innovative<br />Strategies Fund
-                                            </span>
-                                        </div>
-                                    ) : (
-                                        item.imageSrc && (
-                                            <img
-                                                src={item.imageSrc}
-                                                alt=""
-                                                className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                                            />
-                                        )
+                                    {item.imageUrl && (
+                                        <img
+                                            src={item.imageUrl}
+                                            alt={item.title}
+                                            className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                        />
                                     )}
                                 </div>
 
@@ -167,7 +215,7 @@ export function Insights() {
                                                     before:rounded-full before:bg-[#111] before:align-middle
                                                     before:content-['']
                                                 ">
-                                                    {item.authors}
+                                                    {(item.authors || []).map((author: InsightAuthor) => author.name).join(", ")}
                                                 </address>
                                             )}
                                         </div>
@@ -179,16 +227,22 @@ export function Insights() {
                                             text-[#111]
                                         ">
                                             <ArrowSVG />
-                                            <span className="tracking-wide">{item.linkText}</span>
+                                            <span className="tracking-wide">Learn more</span>
                                         </div>
 
                                     </div>
                                 </div>
 
                             </article>
-                        </a>
+                        </Link>
                     </li>
                 ))}
+
+                {insightsList.length === 0 && (
+                    <li className="px-6 lg:px-[48px] py-10 text-gray-500 border-y border-[#e0e0e0]">
+                        Add more insights from admin to populate this section.
+                    </li>
+                )}
             </ul>
 
         </section>
