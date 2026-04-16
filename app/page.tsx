@@ -3,20 +3,10 @@ import { Footer } from "@/components/layout/Footer";
 import { AreasOfFocus } from "@/components/sections/AreasOfFocus";
 import { Insights } from "@/components/sections/Insights";
 import { Hero } from "@/components/sections/Hero";
-import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col w-full bg-[#f9f9f9] relative">
-      {/* Admin Login Button - Fixed Position */}
-      <Link
-        href="/admin/login"
-        className="fixed bottom-6 right-6 z-50 bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:bg-gray-800 transition-colors shadow-lg"
-      >
-        Admin
-      </Link>
-
       <div className="flex-1 flex flex-col w-full relative bg-[#fdfbf9]">
         <Navbar />
 

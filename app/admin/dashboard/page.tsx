@@ -124,6 +124,68 @@ export default function AdminDashboard() {
     return null;
   };
 
+  const convertImageToDataUrl = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const maxWidth = 1600;
+            const scale = img.width > maxWidth ? maxWidth / img.width : 1;
+            const width = Math.round(img.width * scale);
+            const height = Math.round(img.height * scale);
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext("2d");
+            if (!ctx) {
+              reject(new Error("Failed to process image"));
+              return;
+            }
+
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL("image/jpeg", 0.85));
+          } catch (error) {
+            reject(error);
+          }
+        };
+
+        img.onerror = () => reject(new Error("Invalid image file"));
+        img.src = String(reader.result);
+      };
+
+      reader.onerror = () => reject(new Error("Failed to read image file"));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleCompanyImageUpload = async (file: File | null) => {
+    if (!file) return;
+
+    try {
+      const imageDataUrl = await convertImageToDataUrl(file);
+      setCompanyFormData((prev) => ({ ...prev, imageUrl: imageDataUrl }));
+    } catch (error) {
+      console.error("Failed to process company image:", error);
+      alert("Failed to process company image");
+    }
+  };
+
+  const handleInsightImageUpload = async (file: File | null) => {
+    if (!file) return;
+
+    try {
+      const imageDataUrl = await convertImageToDataUrl(file);
+      setInsightFormData((prev) => ({ ...prev, imageUrl: imageDataUrl }));
+    } catch (error) {
+      console.error("Failed to process insight image:", error);
+      alert("Failed to process insight image");
+    }
+  };
+
   useEffect(() => {
     checkAuth();
   }, []);
@@ -225,6 +287,20 @@ export default function AdminDashboard() {
     });
   };
 
+  const clearHomeInsights = () => {
+    setSettingsFormData((prev) => ({ ...prev, homeInsightSlugs: [] }));
+  };
+
+  const selectLatestHomeInsights = () => {
+    const latestSlugs = insights.slice(0, 4).map((item) => item.slug);
+    setSettingsFormData((prev) => ({ ...prev, homeInsightSlugs: latestSlugs }));
+  };
+
+  const getHomepageInsightRole = (index: number) => {
+    if (index === 0) return "Featured Left";
+    return `Right ${index}`;
+  };
+
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login");
@@ -256,6 +332,11 @@ export default function AdminDashboard() {
 
   const handleCompanySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!companyFormData.imageUrl) {
+      alert("Please upload a company image");
+      return;
+    }
     
     try {
       const url = editingId ? `/api/companies/${editingId}` : "/api/companies";
@@ -284,6 +365,11 @@ export default function AdminDashboard() {
 
   const handleInsightSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!insightFormData.imageUrl) {
+      alert("Please upload an insight image");
+      return;
+    }
     
     try {
       const url = editingId ? `/api/insights/${editingId}` : "/api/insights";
@@ -595,9 +681,53 @@ export default function AdminDashboard() {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Homepage Insights (first selected is featured, next 3 are on right)
+                    Homepage Insights
                   </label>
-                  <p className="text-xs text-gray-500 mb-3">Select up to 4 insights.</p>
+                  <p className="text-xs text-gray-500 mb-3">
+                    Selected order controls placement: 1 = Featured Left, 2-4 = Right cards.
+                  </p>
+
+                  <div className="mb-3 p-3 border rounded-md bg-gray-50">
+                    <p className="text-xs font-medium text-gray-700 mb-2">Selected for Homepage</p>
+                    {settingsFormData.homeInsightSlugs.length === 0 ? (
+                      <p className="text-xs text-gray-500">No insights selected yet.</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {settingsFormData.homeInsightSlugs.map((slug, idx) => {
+                          const selectedInsight = insights.find((item) => item.slug === slug);
+                          return (
+                            <div key={slug} className="flex items-center justify-between gap-3 text-xs bg-white border rounded px-2 py-1.5">
+                              <div className="min-w-0">
+                                <span className="inline-block mr-2 px-2 py-0.5 rounded bg-black text-white text-[10px] uppercase tracking-wide">
+                                  {getHomepageInsightRole(idx)}
+                                </span>
+                                <span className="text-gray-800">
+                                  {selectedInsight?.title || slug}
+                                </span>
+                              </div>
+                              <button
+                                type="button"
+                                className="text-red-600 hover:text-red-700"
+                                onClick={() => toggleHomeInsight(slug)}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    <div className="flex gap-2 mt-3">
+                      <Button type="button" variant="outline" size="sm" onClick={selectLatestHomeInsights}>
+                        Use Latest 4
+                      </Button>
+                      <Button type="button" variant="outline" size="sm" onClick={clearHomeInsights}>
+                        Clear
+                      </Button>
+                    </div>
+                  </div>
+
                   <div className="space-y-2 border rounded-md p-3 max-h-72 overflow-auto bg-white">
                     {insights.length === 0 && (
                       <p className="text-sm text-gray-500">No insights found. Create insights first.</p>
@@ -605,6 +735,7 @@ export default function AdminDashboard() {
 
                     {insights.map((insight) => {
                       const checked = settingsFormData.homeInsightSlugs.includes(insight.slug);
+                      const selectedIndex = settingsFormData.homeInsightSlugs.findIndex((slug) => slug === insight.slug);
                       return (
                         <label
                           key={insight._id}
@@ -616,10 +747,15 @@ export default function AdminDashboard() {
                             onChange={() => toggleHomeInsight(insight.slug)}
                             className="mt-1"
                           />
-                          <span className="text-sm text-gray-800">
-                            {insight.title}
+                          <div className="text-sm text-gray-800 min-w-0">
+                            <span>{insight.title}</span>
                             <span className="block text-xs text-gray-500">/{insight.slug}</span>
-                          </span>
+                            {selectedIndex >= 0 && (
+                              <span className="inline-block mt-1 text-[10px] px-2 py-0.5 rounded bg-green-100 text-green-700 uppercase tracking-wide">
+                                {getHomepageInsightRole(selectedIndex)}
+                              </span>
+                            )}
+                          </div>
                         </label>
                       );
                     })}
@@ -816,13 +952,24 @@ export default function AdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Image URL</label>
+                  <label className="block text-sm font-medium mb-2">Company Image</label>
                   <Input
-                    value={companyFormData.imageUrl}
-                    onChange={(e) => setCompanyFormData({ ...companyFormData, imageUrl: e.target.value })}
-                    placeholder="https://..."
-                    required
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleCompanyImageUpload(e.target.files?.[0] || null)}
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Upload an image file. It will be stored in MongoDB.
+                  </p>
+                  {companyFormData.imageUrl && (
+                    <div className="mt-3 w-full max-w-sm h-40 bg-gray-100 rounded overflow-hidden">
+                      <img
+                        src={companyFormData.imageUrl}
+                        alt="Company preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -983,13 +1130,24 @@ export default function AdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Image URL</label>
+                  <label className="block text-sm font-medium mb-2">Insight Image</label>
                   <Input
-                    value={insightFormData.imageUrl}
-                    onChange={(e) => setInsightFormData({ ...insightFormData, imageUrl: e.target.value })}
-                    placeholder="https://..."
-                    required
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleInsightImageUpload(e.target.files?.[0] || null)}
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Upload an image file. It will be stored in MongoDB.
+                  </p>
+                  {insightFormData.imageUrl && (
+                    <div className="mt-3 w-full max-w-sm h-40 bg-gray-100 rounded overflow-hidden">
+                      <img
+                        src={insightFormData.imageUrl}
+                        alt="Insight preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>
