@@ -116,7 +116,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
                             {/* Newsletter signup */}
                             <div>
-                                <p className="text-[14px] font-semibold text-[#111] mb-3">Stay Ahead with Fawaz</p>
+                                <p className="text-[14px] font-semibold text-[#111] mb-3">Stay ahead with Fawaaz</p>
                                 <form className="flex items-center gap-0 border border-gray-300 rounded-none overflow-hidden hover:border-gray-500 transition-colors">
                                     <input
                                         type="email"
@@ -128,7 +128,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                                     </button>
                                 </form>
                                 <p className="text-[10px] text-[#999] mt-2 leading-[1.5]">
-                                    By subscribing, you agree to receive marketing communications from Fawaz.
+                                    By subscribing, you agree to receive emails from Fawaaz Sheriff.
                                 </p>
                             </div>
                         </aside>
