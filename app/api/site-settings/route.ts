@@ -3,8 +3,8 @@ import { connectDB } from '@/lib/mongodb';
 import SiteSettings from '@/lib/models/SiteSettings';
 import { verifyToken } from '@/lib/auth';
 
-const DEFAULT_BANNER_TEXT =
-  'Fundraise Announcement: Congrats to Emergent for raising $70M from Khosla Ventures and SoftBank!';
+// Empty = no banner. Set the text from the admin panel to show one.
+const DEFAULT_BANNER_TEXT = '';
 
 // GET site settings (public)
 export async function GET() {
