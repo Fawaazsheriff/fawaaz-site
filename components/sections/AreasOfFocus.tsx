@@ -4,13 +4,13 @@ export function AreasOfFocus() {
     const itemsLeft = [
         "AI & Machine Learning",
         "Software & Internet",
-        "Robotics"
+        "Aerospace & Defence"
     ];
 
     const itemsRight = [
+        "Financial Services & Fintech",
         "Tech, Media, Telecom",
-        "Energy & Climate Tech",
-        "Financial Services & Fintech"
+        "Energy & Climate Tech"
     ];
 
     return (
