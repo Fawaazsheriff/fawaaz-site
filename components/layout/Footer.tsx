@@ -68,7 +68,7 @@ export function Footer() {
                 {/* Small Legal Disclaimer (Inside inner borders to pull borders to bottom) */}
                 <div className="w-full px-6 lg:px-12 pt-8 pb-16">
                     <div className="text-[10px] text-[#555] font-light leading-relaxed max-w-[1200px]">
-                        Any investments or portfolio companies mentioned, referred to, or described on this page are presented for informational purposes only and represent a selected, non-comprehensive list of investments made by funds managed by Tribe Capital Management ("Tribe Capital"). The companies shown are not intended to be representative of investment performance and do not imply that any investment has been or will be profitable. Certain publicly traded companies on this list may still be held in Tribe Capital funds. Excluded from this list are investments for which the issuer has not provided permission for Tribe Capital to disclose publicly. A complete list of investments made by funds managed by Tribe Capital is available here. This list is updated quarterly and may not reflect the most recent investments. Past investments of Tribe Capital, its pooled investment vehicles, or investment strategies are not necessarily indicative of future results. AUM based on committed capital as of September 30, 2025.
+                        Views expressed on this site are my own and do not represent The Rainmaker Group. Nothing here is investment advice or an offer to buy or sell any security.
                     </div>
                 </div>
             </div>

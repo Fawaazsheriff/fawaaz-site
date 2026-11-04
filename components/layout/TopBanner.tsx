@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
-const DEFAULT_BANNER_TEXT =
-    "Fundraise Announcement: Congrats to Emergent for raising $70M from Khosla Ventures and SoftBank!";
+// Empty = no banner. Set the text from the admin panel to show one.
+const DEFAULT_BANNER_TEXT = "";
 
 export function TopBanner() {
     const [isVisible, setIsVisible] = useState(true);

@@ -22,7 +22,7 @@ export function Navbar() {
                 {/* Logo Section */}
                 <div className="flex items-center justify-center px-6 lg:px-10 lg:border-r border-grid shrink-0 w-auto lg:w-[300px]">
                     <Link href="/" className="font-[family-name:var(--font-serif)] font-bold text-[22px] tracking-normal uppercase">
-                        Fawaz
+                        Fawaaz
                     </Link>
                 </div>
 
