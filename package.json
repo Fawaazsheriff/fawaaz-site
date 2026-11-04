@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/make-sketch.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/make-sketch.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

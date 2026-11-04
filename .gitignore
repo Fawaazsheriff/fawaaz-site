@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# netlify
+.netlify
+
+# generated at build time by scripts/make-sketch.mjs
+/public/mountain-sketch.webp
