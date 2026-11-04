@@ -2,63 +2,55 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { HeroSketch } from "./HeroSketch";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Track scroll progress within the Hero section
+
+  // The content sheet below slides up over this pinned hero.
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
-
-  // Scale the mountain slightly but anchor the scale to the bottom
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  // Start the mountain 15% lower than the container, and move it up to create a parallax reveal
-  const y = useTransform(scrollYProgress, [0, 1], ["15%", "-5%"]);
+  const sceneY = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
 
   return (
     <section ref={containerRef} className="relative w-full h-[150vh]">
-      {/* Sticky container stays pinned to the viewport for the duration of the 150vh scroll */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#eff3f6]">
-        
-        {/* Soft yellow glow at the bottom */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-[radial-gradient(ellipse_at_bottom,rgba(255,225,120,0.4)_0%,transparent_70%)] pointer-events-none" />
-
-        {/* Animated Background Image */}
-        <motion.div 
-          className="absolute inset-0 w-full h-full flex items-end justify-end origin-bottom"
-          style={{ scale, y }}
-        >
-          {/* Mountain image starting from bottom right */}
-          <img 
-            src="/mountain.webp" 
-            alt="Mountain View" 
-            className="w-full h-full object-cover object-[center_bottom] md:object-[right_bottom] opacity-90"
-          />
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#f1f2f0]">
+        {/* Graphite scene: lower portion on small screens, full bleed on desktop */}
+        <motion.div className="absolute inset-x-0 bottom-0 top-[40%] md:top-0" style={{ y: sceneY }}>
+          <HeroSketch />
         </motion.div>
 
-        {/* Content Overlay */}
-        <div className="relative z-10 w-full h-full flex flex-col items-center justify-start pt-[12vh] px-6 md:px-12 lg:px-24">
-          <div className="max-w-[1000px] w-full mx-auto flex flex-col items-center gap-6 text-center">
-            
-            <h1 
-              className="text-[30px] sm:text-[40px] md:text-[50px] lg:text-[60px] font-bold leading-[1.05] tracking-tighter text-[#1C1D20] mb-2" 
-              style={{ fontFamily: 'var(--font-inter), sans-serif' }}
-            >
-              Investing in the <br className="hidden md:block"/> Businesses and Industries <br className="hidden md:block"/> <span className="text-[var(--color-tribe-blue)]">Defining the Next Decade</span>
+        {/* Soft paper wash so the headline always reads */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[48%] bg-gradient-to-b from-[#f1f2f0] via-[#f1f2f0]/90 to-transparent md:inset-y-0 md:right-auto md:h-full md:w-[55%] md:bg-gradient-to-r" />
+
+        <motion.div
+          className="relative z-10 h-full w-full px-6 md:px-12 lg:px-10 pt-[9vh] md:pt-[14vh]"
+          style={{ y: textY }}
+        >
+          <div className="max-w-[640px]">
+            <h1 className="hero-rise text-[38px] sm:text-[48px] md:text-[60px] lg:text-[68px] font-medium leading-[1.02] tracking-[-0.045em] text-[#1C1D20]">
+              Investing in the businesses and industries defining the next decade.
             </h1>
-            
-            <p 
-              className="text-[15px] md:text-[18px] font-medium text-[#444] leading-[1.6] max-w-[600px]" 
-              style={{ fontFamily: 'var(--font-inter), sans-serif' }}
-            >
+
+            <p className="hero-rise mt-7 max-w-[460px] text-[16px] md:text-[18px] leading-[1.6] text-[#4a4c52]" style={{ animationDelay: "0.15s" }}>
               Deep dives into the companies of the future, focusing on what matters most.
             </p>
-            
-          </div>
-        </div>
 
+            <a
+              href="#insights"
+              className="hero-rise group mt-9 inline-flex items-center gap-10 border-b border-[#1C1D20]/40 pb-2 text-[14px] font-medium text-[#1C1D20] transition-colors hover:border-[#3847FF] hover:text-[#3847FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3847FF]"
+              style={{ animationDelay: "0.3s" }}
+            >
+              Read the latest insights
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true" className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+                <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" strokeWidth="1.2" />
+              </svg>
+            </a>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
