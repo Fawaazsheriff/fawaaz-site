@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import { TopBanner } from "@/components/layout/TopBanner";
 import "./globals.css";
 
@@ -8,9 +8,15 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
 export const metadata: Metadata = {
-  title: "Fawaz",
-  description: "We are a venture capital firm focused on harnessing AI and data science.",
+  title: "Fawaaz Sheriff",
+  description: "Research and conversations on the businesses and industries defining the next decade.",
 };
 
 export default function RootLayout({
@@ -21,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} antialiased`}
+        className={`${inter.variable} ${plexMono.variable} antialiased`}
       >
         <TopBanner />
         {children}

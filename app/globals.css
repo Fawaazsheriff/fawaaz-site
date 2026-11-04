@@ -7,6 +7,7 @@
 @theme inline {
   --font-sans: var(--font-inter);
   --font-aspekta: 'Aspekta', var(--font-inter), sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --color-tribe-blue: #3847FF;
   --color-tribe-darkest: #000000;
@@ -113,5 +114,76 @@
 
   .dark .border-grid {
     border-color: var(--color-grid-line-dark);
+  }
+}
+/* ── Hero graphite study ───────────────────────────── */
+.hero-sketch .sk-draw path,
+.hero-sketch .sk-draw rect,
+.hero-sketch .sk-draw circle,
+.hero-sketch .sk-draw ellipse {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: sk-draw 1.9s cubic-bezier(0.6, 0.05, 0.3, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+.hero-sketch .sk-draw.sk-slow path {
+  animation-duration: 2.6s;
+}
+/* Keep intentionally dashed guide lines dashed */
+.hero-sketch .sk-draw path[stroke-dasharray] {
+  stroke-dasharray: 2 7;
+  stroke-dashoffset: 0;
+  animation-name: sk-appear;
+}
+.hero-sketch .sk-fade {
+  opacity: 0;
+  animation: sk-appear 1.2s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+.hero-sketch image.sk-fade {
+  animation-duration: 2.4s;
+}
+@keyframes sk-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes sk-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-rise {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: hero-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+@keyframes hero-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.insight-hatch {
+  background-color: #eceeef;
+  background-image: repeating-linear-gradient(42deg, rgba(61, 63, 69, 0.22) 0 1px, transparent 1px 6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sketch .sk-draw path,
+  .hero-sketch .sk-draw rect,
+  .hero-sketch .sk-draw circle,
+  .hero-sketch .sk-draw ellipse,
+  .hero-sketch .sk-fade,
+  .hero-rise {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
