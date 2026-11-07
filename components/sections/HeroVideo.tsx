@@ -21,7 +21,7 @@ const SEGMENT_MS = 9000;
 
 const embedSrc = (c: Clip) =>
   `https://www.youtube-nocookie.com/embed/${c.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${c.id}` +
-  `&start=${c.start}&playsinline=1&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&fs=0&enablejsapi=1`;
+  `&start=${c.start}&playsinline=1&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&fs=0&cc_load_policy=0&enablejsapi=1`;
 
 const poster = (c: Clip) => `https://i.ytimg.com/vi/${c.id}/hqdefault.jpg`;
 
@@ -66,6 +66,7 @@ export function HeroVideo() {
   // When a clip comes forward, rewind it to its chosen moment; pause or resume with the reel.
   useEffect(() => {
     const f = frames.current[index];
+    command(f, "unloadModule", ["captions"]);
     if (running) {
       command(f, "seekTo", [CLIPS[index].start, true]);
       command(f, "playVideo");
@@ -111,12 +112,20 @@ export function HeroVideo() {
               title={`${c.company} video`}
               tabIndex={-1}
               allow="autoplay; encrypted-media; picture-in-picture"
-              onLoad={() => window.setTimeout(() => setReady((r) => ({ ...r, [i]: true })), 1200)}
+              onLoad={(e) => {
+                const f = e.currentTarget;
+                // Turn captions off, and wait out the player's start-up overlay before fading in.
+                window.setTimeout(() => command(f, "unloadModule", ["captions"]), 800);
+                window.setTimeout(() => setReady((r) => ({ ...r, [i]: true })), 2600);
+              }}
               className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-[115%] w-[115vw] min-w-[205%] -translate-x-1/2 -translate-y-1/2 border-0 md:min-w-[177.78vh] md:w-[118vw] md:min-h-[118%]"
             />
           </div>
         );
       })}
+
+      {/* Soft shade at the foot so the line-up reads over bright footage */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
 
       {/* Caption: who's on screen, and the rest of the line-up */}
       <div className="absolute bottom-0 right-0 z-20 w-full px-6 pb-14 md:w-[52%] md:px-12 md:pb-16 lg:px-10">
