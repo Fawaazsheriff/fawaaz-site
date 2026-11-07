@@ -196,3 +196,14 @@
   display: none;
 }
 
+
+/* Hero reel: progress bar under the company now on screen */
+@keyframes hero-reel-progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+.hero-reel-progress {
+  animation-name: hero-reel-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
