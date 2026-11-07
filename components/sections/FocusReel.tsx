@@ -20,6 +20,8 @@ export function FocusReel() {
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [loaded, setLoaded] = useState<boolean[]>(() => SLIDES.map(() => false));
+  const markLoaded = (n: number) => setLoaded((l) => (l[n] ? l : l.map((v, k) => (k === n ? true : v))));
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -37,11 +39,13 @@ export function FocusReel() {
 
   const running = !paused && !reduced && visible;
 
+  // Advance only when the next photo has finished loading, so caption and image stay in sync.
+  const nextReady = loaded[(i + 1) % SLIDES.length];
   useEffect(() => {
-    if (!running) return;
+    if (!running || !nextReady) return;
     const t = setTimeout(() => setI((n) => (n + 1) % SLIDES.length), HOLD_MS);
     return () => clearTimeout(t);
-  }, [i, running]);
+  }, [i, running, nextReady]);
 
   return (
     <section ref={ref} aria-label="Areas of focus" className="relative -mt-[40px] w-full overflow-hidden bg-white">
@@ -52,7 +56,13 @@ export function FocusReel() {
             src={s.image}
             alt={n === i ? s.alt : ""}
             aria-hidden={n !== i}
-            loading={n === 0 ? "eager" : "lazy"}
+            loading="eager"
+            decoding="async"
+            fetchPriority={n === 0 ? "high" : "low"}
+            ref={(el) => {
+              if (el?.complete && el.naturalWidth > 0) markLoaded(n);
+            }}
+            onLoad={() => markLoaded(n)}
             className={`reel-img absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-out ${
               n === i ? "opacity-100" : "opacity-0"
             } ${n === i && running ? "is-zooming" : ""}`}
@@ -82,7 +92,7 @@ export function FocusReel() {
                   <li key={s.label}>
                     <button
                       type="button"
-                      onClick={() => setI(n)}
+                      onClick={() => loaded[n] && setI(n)}
                       aria-label={`Show ${s.label}`}
                       aria-current={n === i}
                       className="group block py-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3847FF]"
