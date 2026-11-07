@@ -187,3 +187,11 @@
     transform: none !important;
   }
 }
+
+/* Stacked focus cards: no sticking on small screens */
+@media (max-width: 767px) {
+  .area-card {
+    position: relative !important;
+    top: auto !important;
+  }
+}

@@ -19,7 +19,7 @@ export default function Home() {
           <Hero />
 
           {/* Content sheet that slides up over the hero */}
-          <div className="relative z-10 w-full bg-[#f4f6f8] rounded-t-[40px] shadow-2xl -mt-[40px] pt-[40px] overflow-hidden">
+          <div className="relative z-10 w-full bg-[#f4f6f8] rounded-t-[40px] shadow-2xl -mt-[40px] pt-[40px] overflow-clip">
             <WhoIAm />
             <AreasOfFocus />
             <InsightsList />
