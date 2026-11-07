@@ -188,10 +188,10 @@
   }
 }
 
-/* Stacked focus cards: no sticking on small screens */
-@media (max-width: 767px) {
-  .area-card {
-    position: relative !important;
-    top: auto !important;
-  }
+/* Horizontal focus-area rail: hide the scrollbar, keep it scrollable */
+.areas-rail {
+  scrollbar-width: none;
+}
+.areas-rail::-webkit-scrollbar {
+  display: none;
 }
