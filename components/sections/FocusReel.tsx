@@ -8,7 +8,7 @@ const SLIDES = [
   { label: "AI & Machine Learning", image: img("photo-1749997087618-305670af5811"), alt: "A silver humanoid robot in a bright white corridor", pos: "50% 40%" },
   { label: "Deep Tech & Space", image: img("photo-1605813640975-0ef0ad36826a"), alt: "A white rocket against a pale sky", pos: "50% 50%" },
   { label: "Aerospace & Defence", image: img("photo-1599403868569-30dae419c0a7"), alt: "A grey drone on a white background", pos: "50% 50%" },
-  { label: "Semiconductors", image: img("photo-1717962688747-7e13dfa31538"), alt: "Silicon wafers on a light background", pos: "50% 50%" },
+  { label: "Semiconductors", image: img("photo-1717962688747-7e13dfa31538"), alt: "Silicon wafers on a light background", pos: "50% 50%", tone: "saturate(0.25) hue-rotate(175deg) brightness(1.12) contrast(0.95)" },
   { label: "Software & Internet", image: img("photo-1597673030062-0a0f1a801a31"), alt: "A laptop on a white desk", pos: "50% 55%" },
 ];
 
@@ -66,7 +66,7 @@ export function FocusReel() {
             className={`reel-img absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-out ${
               n === i ? "opacity-100" : "opacity-0"
             } ${n === i && running ? "is-zooming" : ""}`}
-            style={{ objectPosition: s.pos }}
+            style={{ objectPosition: s.pos, filter: "tone" in s ? s.tone : undefined }}
           />
         ))}
 
