@@ -196,33 +196,3 @@
   display: none;
 }
 
-/* Focus reel: slow zoom on the active photo, progress bar fill, caption rise */
-.reel-img {
-  transform: scale(1.02);
-  transition-property: opacity, transform;
-}
-.reel-img.is-zooming {
-  transform: scale(1.09);
-  transition: opacity 1400ms ease-out, transform 6800ms linear;
-}
-.reel-progress {
-  width: 0;
-  animation: reel-fill linear forwards;
-}
-@keyframes reel-fill {
-  to {
-    width: 100%;
-  }
-}
-.reel-caption {
-  animation: hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  .reel-img,
-  .reel-img.is-zooming {
-    transform: none !important;
-  }
-  .reel-caption {
-    animation: none;
-  }
-}
