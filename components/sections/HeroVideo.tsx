@@ -3,21 +3,22 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
- * a16z-style background reel: official clips from Indian companies I'm rooting for,
+ * a16z-style background reel: product footage from Indian companies I'm rooting for,
  * played muted through YouTube's own embedded player (nothing is re-hosted).
+ * Each clip is cut to the seconds that show the product itself: no interviews, no founders.
  */
-type Clip = { company: string; sector: string; id: string; start: number };
+type Clip = { company: string; sector: string; id: string; start: number; seconds: number };
 
 const CLIPS: Clip[] = [
-  { company: "Skyroot Aerospace", sector: "Space", id: "twS9Y5tYVxw", start: 6 },
-  { company: "Sarvam", sector: "AI", id: "aLBQZcu7swY", start: 30 },
-  { company: "ideaForge", sector: "Defence", id: "DlTu8qv6-jo", start: 15 },
-  { company: "Rocketlane", sector: "Software", id: "vlPyiTwd2io", start: 20 },
-  { company: "Bellatrix Aerospace", sector: "Propulsion", id: "wB6HA7pdEb8", start: 10 },
-  { company: "JEH Aerospace", sector: "Aerospace", id: "ZYyVTaY-Kiw", start: 20 },
+  { company: "Skyroot Aerospace", sector: "Space", id: "twS9Y5tYVxw", start: 3, seconds: 6 }, // Vikram-1 lift-off
+  { company: "Sarvam", sector: "AI", id: "Cv7GvQaqIOM", start: 22, seconds: 5 }, // Samvaad voice agents
+  { company: "ideaForge", sector: "Defence", id: "BjJCUjr4Uqk", start: 26, seconds: 5 }, // SWITCH UAV in flight
+  { company: "Mindgrove", sector: "Semiconductors", id: "Ro7_Vi7MrpM", start: 266, seconds: 5 }, // Secure IoT chip on board
+  { company: "Rocketlane", sector: "Software", id: "murT2SGYjUU", start: 80, seconds: 5 }, // Nitro AI agents
+  { company: "Navi", sector: "Financial services", id: "OBnTk0mry20", start: 14, seconds: 6 }, // Navi UPI paying
+  { company: "Bellatrix Aerospace", sector: "Propulsion", id: "wB6HA7pdEb8", start: 35, seconds: 6 }, // Thruster firing
+  { company: "JEH Aerospace", sector: "Aerospace", id: "ZYyVTaY-Kiw", start: 68, seconds: 3.5 }, // CNC machining floor
 ];
-
-const SEGMENT_MS = 9000;
 
 const embedSrc = (c: Clip) =>
   `https://www.youtube-nocookie.com/embed/${c.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${c.id}` +
@@ -37,6 +38,10 @@ export function HeroVideo() {
   const [ready, setReady] = useState<Record<number, boolean>>({});
   const frames = useRef<Record<number, HTMLIFrameElement | null>>({});
   const rootRef = useRef<HTMLDivElement>(null);
+  const indexRef = useRef(0);
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -59,7 +64,7 @@ export function HeroVideo() {
 
   useEffect(() => {
     if (!running) return;
-    const t = window.setTimeout(() => setIndex((i) => (i + 1) % CLIPS.length), SEGMENT_MS);
+    const t = window.setTimeout(() => setIndex((i) => (i + 1) % CLIPS.length), CLIPS[index].seconds * 1000);
     return () => window.clearTimeout(t);
   }, [index, running]);
 
@@ -75,8 +80,8 @@ export function HeroVideo() {
     }
   }, [index, running]);
 
-  const next = (index + 1) % CLIPS.length;
-  const mounted = reduced ? [] : [index, next];
+  // Keep the current clip plus the next two loaded, so cuts land instantly.
+  const mounted = reduced ? [] : [index, (index + 1) % CLIPS.length, (index + 2) % CLIPS.length];
 
   const go = useCallback((i: number) => setIndex(i), []);
 
@@ -89,7 +94,7 @@ export function HeroVideo() {
           src={poster(c)}
           alt=""
           aria-hidden="true"
-          className={`absolute inset-0 h-full w-full scale-110 object-cover transition-opacity duration-700 ${i === index ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 h-full w-full scale-110 object-cover transition-opacity duration-500 ${i === index ? "opacity-100" : "opacity-0"}`}
           loading={i === 0 ? "eager" : "lazy"}
         />
       ))}
@@ -101,7 +106,7 @@ export function HeroVideo() {
           <div
             key={c.id}
             aria-hidden="true"
-            className={`pointer-events-none absolute inset-0 transition-opacity duration-700 ${show ? "opacity-100" : "opacity-0"}`}
+            className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${show ? "opacity-100" : "opacity-0"}`}
           >
             {/* Oversized and centred so the 16:9 frame covers any viewport and YouTube's chrome is cropped */}
             <iframe
@@ -114,9 +119,16 @@ export function HeroVideo() {
               allow="autoplay; encrypted-media; picture-in-picture"
               onLoad={(e) => {
                 const f = e.currentTarget;
-                // Turn captions off, and wait out the player's start-up overlay before fading in.
-                window.setTimeout(() => command(f, "unloadModule", ["captions"]), 800);
-                window.setTimeout(() => setReady((r) => ({ ...r, [i]: true })), 2600);
+                // Captions off; clips waiting their turn hold on their first product frame.
+                window.setTimeout(() => {
+                  command(f, "unloadModule", ["captions"]);
+                  if (i !== indexRef.current) {
+                    command(f, "seekTo", [c.start, true]);
+                    command(f, "pauseVideo");
+                  }
+                }, 900);
+                // Wait out the player's start-up overlay before it can fade in.
+                window.setTimeout(() => setReady((r) => ({ ...r, [i]: true })), 2200);
               }}
               className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-[115%] w-[115vw] min-w-[205%] -translate-x-1/2 -translate-y-1/2 border-0 md:min-w-[177.78vh] md:w-[118vw] md:min-h-[118%]"
             />
@@ -150,7 +162,7 @@ export function HeroVideo() {
                         key={`p-${index}`}
                         aria-hidden="true"
                         className="hero-reel-progress absolute bottom-0 left-0 h-[2px] bg-[#3847FF]"
-                        style={{ animationDuration: `${SEGMENT_MS}ms` }}
+                        style={{ animationDuration: `${c.seconds * 1000}ms` }}
                       />
                     )}
                   </button>
