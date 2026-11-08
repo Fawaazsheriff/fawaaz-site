@@ -2,7 +2,7 @@ import { Landmark, LineChart, MessagesSquare } from "lucide-react";
 
 const PILLARS = [
   { icon: Landmark, label: "Capital raising\nand advisory" },
-  { icon: LineChart, label: "Research on listed\nnew-age tech" },
+  { icon: LineChart, label: "Investing in\nnew-age tech" },
   { icon: MessagesSquare, label: "Conversations\nwith founders" },
 ];
 
@@ -18,7 +18,7 @@ export function WhoIAm() {
         <h2 className="mt-6 text-[28px] sm:text-[36px] md:text-[44px] font-medium leading-[1.15] tracking-[-0.035em] text-[#1C1D20]">
           I help technology and fintech companies raise capital and tell their story to investors.{" "}
           <span className="text-[#a2a5ab]">
-            Alongside, I publish the RainGauge Index on India&apos;s listed new-age tech and write about the businesses defining the next decade.
+            Alongside, I invest in and write about the businesses defining the next decade.
           </span>
         </h2>
 
