@@ -1,8 +1,8 @@
-import { Landmark, LineChart, MessagesSquare } from "lucide-react";
+import { LineChart, MessagesSquare, Search } from "lucide-react";
 
 const PILLARS = [
-  { icon: Landmark, label: "Capital raising\nand advisory" },
   { icon: LineChart, label: "Investing in\nnew-age tech" },
+  { icon: Search, label: "Deep dives on\nthe companies" },
   { icon: MessagesSquare, label: "Conversations\nwith founders" },
 ];
 
@@ -16,9 +16,9 @@ export function WhoIAm() {
         </p>
 
         <h2 className="mt-6 text-[28px] sm:text-[36px] md:text-[44px] font-medium leading-[1.15] tracking-[-0.035em] text-[#1C1D20]">
-          I help technology and fintech companies raise capital and tell their story to investors.{" "}
+          I invest in technology and fintech companies building India&apos;s next decade.{" "}
           <span className="text-[#a2a5ab]">
-            Alongside, I invest in and write about the businesses defining the next decade.
+            Alongside, I write deep dives on the businesses and industries shaping it.
           </span>
         </h2>
 
