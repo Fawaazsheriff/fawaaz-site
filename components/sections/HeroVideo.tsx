@@ -103,11 +103,17 @@ export function HeroVideo() {
       {/* Soft shade at the foot so the line-up reads over bright footage */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
 
-      <div className="absolute bottom-0 right-0 z-20 w-full px-6 pb-14 md:w-[56%] md:px-12 md:pb-16 lg:px-10">
+      <div className="absolute bottom-0 right-0 z-20 w-full px-6 pb-8 md:w-[56%] md:px-12 md:pb-16 lg:px-10">
         <div className="flex flex-col gap-3 md:items-end">
-          <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-white/80">Indian companies I&apos;m rooting for</p>
-          <div className="flex items-end gap-3">
-            <ol className="flex flex-wrap gap-1.5 md:justify-end">
+          <p className="hidden font-mono text-[11px] uppercase tracking-[0.1em] text-white/80 md:block">Indian companies I&apos;m rooting for</p>
+          <div className="flex items-end justify-between gap-3 md:justify-end">
+            {/* Phones: one compact caption for the shot on screen */}
+            <p className="min-w-0 text-white md:hidden" aria-live="polite">
+              <span className="block font-mono text-[10px] uppercase tracking-[0.1em] text-white/75">Rooting for</span>
+              <span className="text-[15px] font-medium">{SEGMENTS[index].company}</span>
+              <span className="ml-2 font-mono text-[11px] text-white/75">{SEGMENTS[index].sector}</span>
+            </p>
+            <ol className="hidden flex-wrap gap-1.5 md:flex md:justify-end">
               {SEGMENTS.map((s, i) => (
                 <li key={s.company}>
                   <button
@@ -140,7 +146,7 @@ export function HeroVideo() {
             )}
           </div>
         </div>
-        <p className="mt-3 text-[10px] text-white/55 md:text-right">
+        <p className="mt-2 text-[9px] leading-snug text-white/55 md:mt-3 md:text-right md:text-[10px]">
           Illustrative footage of each sector (Pexels), not footage of the companies named. Not affiliations or investment recommendations.
         </p>
       </div>
