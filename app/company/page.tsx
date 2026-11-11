@@ -35,7 +35,7 @@ export default async function CompanyPage({
                 {/* HERO SECTION - EXACT MATCH */}
                 <section className="w-full flex flex-col items-center text-center px-6 mb-16 md:mb-24">
                     <div className="max-w-[1000px] flex flex-col items-center">
-                        <h1 className="text-[42px] md:text-[64px] font-normal text-[#1a1a1a] tracking-[0.1em] md:tracking-[0.15em] leading-[1.1] mb-6 uppercase" style={{ fontFamily: 'var(--font-inter), sans-serif', fontWeight: 300 }}>
+                        <h1 className="text-[42px] md:text-[64px] font-normal text-[#1a1a1a] leading-[1.1] mb-6 " style={{ fontFamily: 'var(--font-inter), sans-serif', fontWeight: 300 }}>
                             OUR COMPANIES
                         </h1>
                         <p className="text-[20px] md:text-[24px] font-light text-[#555] leading-[1.4] max-w-[600px]">
@@ -96,23 +96,23 @@ export default async function CompanyPage({
                                 <Link
                                     href={`/company?page=${Math.max(1, safePage - 1)}`}
                                     aria-disabled={safePage === 1}
-                                    className={`text-[12px] sm:text-[13px] font-semibold tracking-[0.1em] uppercase px-5 py-3 border border-[#1a1a1a] transition-colors ${
-                                        safePage === 1
-                                            ? "pointer-events-none opacity-40"
+                                    className={`text-[12px] sm:text-[13px] font-normal px-5 py-3 border border-[#1a1a1a] transition-colors ${
+ safePage === 1
+ ? "pointer-events-none opacity-40"
                                             : "hover:bg-[#1a1a1a] hover:text-white"
                                     }`}
                                 >
                                     Previous
                                 </Link>
-                                <span className="text-[12px] sm:text-[13px] font-mono tracking-[0.08em] text-[#1a1a1a]">
+                                <span className="text-[12px] sm:text-[13px] text-[#1a1a1a]">
                                     Page {safePage} of {totalPages}
                                 </span>
                                 <Link
                                     href={`/company?page=${Math.min(totalPages, safePage + 1)}`}
                                     aria-disabled={safePage === totalPages}
-                                    className={`text-[12px] sm:text-[13px] font-semibold tracking-[0.1em] uppercase px-5 py-3 border border-[#1a1a1a] transition-colors ${
-                                        safePage === totalPages
-                                            ? "pointer-events-none opacity-40"
+                                    className={`text-[12px] sm:text-[13px] font-normal px-5 py-3 border border-[#1a1a1a] transition-colors ${
+ safePage === totalPages
+ ? "pointer-events-none opacity-40"
                                             : "hover:bg-[#1a1a1a] hover:text-white"
                                     }`}
                                 >
