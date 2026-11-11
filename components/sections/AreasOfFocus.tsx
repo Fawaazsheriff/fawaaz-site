@@ -84,7 +84,7 @@ export async function AreasOfFocus() {
         <span aria-hidden="true" className="inline-block h-[6px] w-[6px] rounded-[1px] bg-[#1C1D20]" />
         Areas of focus
       </p>
-      <h2 className="mt-5 text-[32px] md:text-[48px] font-medium leading-[1.05] tracking-[-0.045em] text-[#1C1D20]">
+      <h2 className="mt-5 text-[32px] md:text-[48px] font-normal leading-[1.05] tracking-[-0.02em] text-[#1C1D20]">
         Where I spend my research time
       </h2>
     </div>
@@ -104,23 +104,23 @@ export async function AreasOfFocus() {
                 <article className="flex h-full flex-col">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-[8px] bg-[#eceeef]">
                     <img src={a.image} alt={a.alt} className="h-full w-full object-cover" loading="lazy" />
-                    <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 font-mono text-[11px] text-[#1C1D20] backdrop-blur">
+                    <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] text-[#1C1D20] backdrop-blur">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                   </div>
                   <div className="flex flex-1 flex-col px-2 pb-2 pt-5">
-                    <h3 className="text-[21px] font-medium leading-[1.15] tracking-[-0.025em] text-[#1C1D20]">{a.title}</h3>
+                    <h3 className="text-[21px] font-normal leading-[1.15] tracking-[-0.025em] text-[#1C1D20]">{a.title}</h3>
                     <p className="mt-2 text-[14px] leading-[1.55] text-[#5a5d63]">{a.description}</p>
                     <ul className="mb-5 mt-5 flex flex-wrap gap-1.5">
                       {a.topics.map((t) => (
-                        <li key={t} className="rounded-[6px] bg-[#f1f3f5] px-2.5 py-1.5 font-mono text-[11px] text-[#1C1D20]">
+                        <li key={t} className="rounded-[6px] bg-[#f1f3f5] px-2.5 py-1.5 text-[11px] text-[#1C1D20]">
                           {t}
                         </li>
                       ))}
                     </ul>
                     <Link
                       href="/insights"
-                      className="group mt-auto flex items-center justify-between border-t border-[#eceef0] pt-4 font-mono text-[12px] text-[#1C1D20] hover:text-[#3847FF]"
+                      className="group mt-auto flex items-center justify-between border-t border-[#eceef0] pt-4 text-[12px] text-[#1C1D20] hover:text-[#3847FF]"
                     >
                       {n > 0 ? `${n} ${n === 1 ? "insight" : "insights"}` : "Insights coming soon"}
                       <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>

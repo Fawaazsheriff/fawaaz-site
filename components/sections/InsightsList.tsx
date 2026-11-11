@@ -2,6 +2,7 @@ import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import Insight from "@/lib/models/Insight";
 import SiteSettings from "@/lib/models/SiteSettings";
+import { sentenceCase } from "@/lib/format";
 
 const MAX_ITEMS = 6;
 
@@ -91,7 +92,7 @@ export async function InsightsList() {
             </p>
             <a
               href="https://www.linkedin.com/in/fawaazsheriff/"
-              className="group mt-8 inline-flex items-center font-mono text-[13px] text-[#1C1D20]"
+              className="group mt-8 inline-flex items-center text-[13px] text-[#1C1D20]"
             >
               <Arrow />
               Follow along on LinkedIn
@@ -100,7 +101,7 @@ export async function InsightsList() {
         ) : (
           <ul className="border-b border-[#cfcfcf]">
             {items.map((item) => {
-              const byline = (item.authors || []).map((a) => a.name).filter(Boolean).join(", ") || item.tag;
+              const byline = (item.authors || []).map((a) => a.name).filter(Boolean).join(", ") || sentenceCase(item.tag);
               return (
                 <li key={item._id || item.slug} className="border-t border-[#cfcfcf]">
                   <Link
@@ -117,7 +118,7 @@ export async function InsightsList() {
                           />
                         ) : (
                           <div className="insight-hatch h-full w-full flex items-end p-4">
-                            <span className="font-mono text-[12px] text-[#3d3f45]">{item.tag}</span>
+                            <span className=" text-[12px] text-[#3d3f45]">{sentenceCase(item.tag)}</span>
                           </div>
                         )}
                       </div>
@@ -125,7 +126,7 @@ export async function InsightsList() {
                       <div className="mt-5 md:mt-0 md:col-start-7 md:col-span-6 flex flex-col justify-between gap-6 py-1">
                         <div className="flex flex-col gap-2">
                           {item.publishDate && (
-                            <time className="font-mono text-[14px] md:text-[15px] text-[#1C1D20]">{formatDate(item.publishDate)}</time>
+                            <time className=" text-[14px] md:text-[15px] text-[#1C1D20]">{formatDate(item.publishDate)}</time>
                           )}
                           <h3 className="text-[20px] md:text-[23px] leading-[1.25] font-normal text-[#1C1D20] decoration-[1.5px] underline-offset-[4px] group-hover:underline">
                             {item.title}
@@ -137,7 +138,7 @@ export async function InsightsList() {
                             </p>
                           )}
                         </div>
-                        <span className="flex items-center font-mono text-[12px] md:text-[13px] text-[#1C1D20]">
+                        <span className="flex items-center text-[12px] md:text-[13px] text-[#1C1D20]">
                           <Arrow />
                           Learn more
                         </span>
@@ -154,7 +155,7 @@ export async function InsightsList() {
           <div className="mt-12 flex justify-center">
             <Link
               href="/insights"
-              className="bg-[#1C1D20] px-12 py-3 font-mono text-[13px] text-white transition-colors hover:bg-[#3847FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3847FF]"
+              className="bg-[#1C1D20] px-12 py-3 text-[13px] text-white transition-colors hover:bg-[#3847FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3847FF]"
             >
               Read more
             </Link>

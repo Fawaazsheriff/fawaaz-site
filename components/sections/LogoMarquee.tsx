@@ -20,7 +20,7 @@ function Mark({ logo }: { logo: Logo }) {
     // ideaForge's own site sets its name as type: bold "idea", regular "Forge".
     return (
       <span className="whitespace-nowrap text-[26px] leading-none tracking-[-0.01em] text-black" aria-label={logo.name}>
-        <span className="font-bold">idea</span>Forge
+        <span className="font-normal">idea</span>Forge
       </span>
     );
   }

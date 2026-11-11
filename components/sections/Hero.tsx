@@ -28,7 +28,7 @@ export function Hero() {
           style={{ y: textY }}
         >
           <div className="pointer-events-auto max-w-[600px]">
-            <h1 className="hero-rise text-[38px] sm:text-[48px] md:text-[60px] lg:text-[68px] font-normal leading-[1.02] tracking-[-0.05em] text-[#1C1D20]">
+            <h1 className="hero-rise text-[38px] sm:text-[48px] md:text-[60px] lg:text-[68px] font-normal leading-[1.02] tracking-[-0.02em] text-[#1C1D20]">
               Investing in the businesses and industries defining the next decade.
             </h1>
 
@@ -38,7 +38,7 @@ export function Hero() {
 
             <a
               href="#insights"
-              className="hero-rise group mt-9 inline-flex items-center gap-10 border-b border-[#1C1D20]/40 pb-2 text-[14px] font-medium text-[#1C1D20] transition-colors hover:border-[#3847FF] hover:text-[#3847FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3847FF]"
+              className="hero-rise group mt-9 inline-flex items-center gap-10 border-b border-[#1C1D20]/40 pb-2 text-[14px] font-normal text-[#1C1D20] transition-colors hover:border-[#3847FF] hover:text-[#3847FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3847FF]"
               style={{ animationDelay: "0.25s" }}
             >
               Read the latest insights

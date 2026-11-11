@@ -15,7 +15,7 @@ export function WhoIAm() {
           Who I am
         </p>
 
-        <h2 className="mt-6 text-[28px] sm:text-[36px] md:text-[44px] font-medium leading-[1.15] tracking-[-0.035em] text-[#1C1D20]">
+        <h2 className="mt-6 text-[28px] sm:text-[36px] md:text-[44px] font-normal leading-[1.15] tracking-[-0.02em] text-[#1C1D20]">
           I invest in technology and fintech companies building India&apos;s next decade.{" "}
           <span className="text-[#a2a5ab]">
             Alongside, I write deep dives on the businesses and industries shaping it.

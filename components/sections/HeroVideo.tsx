@@ -105,13 +105,13 @@ export function HeroVideo() {
 
       <div className="absolute bottom-0 right-0 z-20 w-full px-6 pb-8 md:w-[56%] md:px-12 md:pb-16 lg:px-10">
         <div className="flex flex-col gap-3 md:items-end">
-          <p className="hidden font-mono text-[11px] uppercase tracking-[0.1em] text-white/80 md:block">Indian companies I&apos;m rooting for</p>
+          <p className="hidden text-[11px] text-white/80 md:block">Indian companies I&apos;m rooting for</p>
           <div className="flex items-end justify-between gap-3 md:justify-end">
             {/* Phones: one compact caption for the shot on screen */}
             <p className="min-w-0 text-white md:hidden" aria-live="polite">
-              <span className="block font-mono text-[10px] uppercase tracking-[0.1em] text-white/75">Rooting for</span>
-              <span className="text-[15px] font-medium">{SEGMENTS[index].company}</span>
-              <span className="ml-2 font-mono text-[11px] text-white/75">{SEGMENTS[index].sector}</span>
+              <span className="block text-[10px] text-white/75">Rooting for</span>
+              <span className="text-[15px] font-normal">{SEGMENTS[index].company}</span>
+              <span className="ml-2 text-[11px] text-white/75">{SEGMENTS[index].sector}</span>
             </p>
             <ol className="hidden flex-wrap gap-1.5 md:flex md:justify-end">
               {SEGMENTS.map((s, i) => (
@@ -121,11 +121,11 @@ export function HeroVideo() {
                     onClick={() => jump(i)}
                     aria-current={i === index}
                     className={`rounded-full border px-3 py-1.5 text-left text-[12px] backdrop-blur-md transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-                      i === index ? "border-white bg-white text-[#1C1D20]" : "border-white/35 bg-black/20 text-white hover:bg-white/20"
+ i === index ? "border-white bg-white text-[#1C1D20]" : "border-white/35 bg-black/20 text-white hover:bg-white/20"
                     }`}
                   >
-                    <span className="font-medium">{s.company}</span>
-                    <span className={`ml-1.5 font-mono text-[10px] ${i === index ? "text-[#3847FF]" : "text-white/70"}`}>{s.sector}</span>
+                    <span className="font-normal">{s.company}</span>
+                    <span className={`ml-1.5 text-[10px] ${i === index ? "text-[#3847FF]" : "text-white/70"}`}>{s.sector}</span>
                   </button>
                 </li>
               ))}
