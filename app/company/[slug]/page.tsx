@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { connectDB } from "@/lib/mongodb";
 import Company from "@/lib/models/Company";
+import { sentenceCase } from "@/lib/format";
 
 export default async function CompanyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -38,8 +39,8 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
                         {/* Left: text */}
                         <div className="flex flex-col justify-center">
-                            <span className="text-[11px] font-bold tracking-[0.15em] text-[#3847FF] uppercase mb-4">
-                                {company.tag}
+                            <span className="text-[11px] font-normal text-[#3847FF] mb-4">
+                                {sentenceCase(company.tag)}
                             </span>
                             <h1 className="text-[32px] md:text-[42px] font-normal leading-[1.1] tracking-tight text-[#171a24] mb-5">
                                 {company.title}
@@ -72,7 +73,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
 
                             {/* Share icons */}
                             <div>
-                                <p className="text-[12px] font-semibold text-[#111] uppercase tracking-wider mb-4">Share</p>
+                                <p className="text-[12px] font-normal text-[#111] mb-4">Share</p>
                                 <div className="flex items-center gap-4">
                                     <button className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 hover:border-gray-400 transition-colors" title="Copy link">
                                         <Link2 className="w-3.5 h-3.5 text-[#555]" />
@@ -98,7 +99,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
                                         href={company.websiteUrl} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 text-[14px] font-medium text-[#111] hover:text-[#3847FF] transition-colors"
+                                        className="inline-flex items-center gap-2 text-[14px] font-normal text-[#111] hover:text-[#3847FF] transition-colors"
                                     >
                                         <Globe className="w-4 h-4" />
                                         Visit website
@@ -117,7 +118,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
                             {/* Connect */}
                             {company.partneringSince && (
                                 <div>
-                                    <p className="text-[14px] font-semibold text-[#111] mb-3">Partnering since</p>
+                                    <p className="text-[14px] font-normal text-[#111] mb-3">Partnering since</p>
                                     <p className="text-[14px] text-[#555]">{company.partneringSince}</p>
                                 </div>
                             )}
