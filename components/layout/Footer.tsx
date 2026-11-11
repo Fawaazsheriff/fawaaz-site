@@ -36,7 +36,7 @@ export function Footer() {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="text-[11px] font-bold tracking-[0.2em] text-white hover:text-[#3847FF] transition-colors uppercase"
+                                className="text-[11px] font-normal text-white hover:text-[#3847FF] transition-colors "
                             >
                                 {link.name}
                             </Link>
@@ -52,13 +52,13 @@ export function Footer() {
                         {/* <div>Designed with <span className="text-[16px] leading-none align-middle mx-1">❋</span> riddhish</div> */}
 
                         <div className="flex items-center gap-5 text-white text-[16px]">
-                            <a href="https://x.com/fawaaz_sheriff" className="hover:opacity-70 font-semibold tracking-wide flex items-center justify-center w-[20px] h-[20px]">
+                            <a href="https://x.com/fawaaz_sheriff" className="hover:opacity-70 font-normal flex items-center justify-center w-[20px] h-[20px]">
                                 <span>X</span>
                             </a>
-                            <a href="https://www.linkedin.com/in/fawaazsheriff/" className="hover:opacity-70 font-bold tracking-wide flex items-center justify-center w-[20px] h-[20px]">
+                            <a href="https://www.linkedin.com/in/fawaazsheriff/" className="hover:opacity-70 font-normal flex items-center justify-center w-[20px] h-[20px]">
                                 <span>in</span>
                             </a>
-                            <a href="https://www.youtube.com/@FawaazSheriff" className="hover:opacity-70 font-bold tracking-wide flex items-center justify-center w-[20px] h-[20px]">
+                            <a href="https://www.youtube.com/@FawaazSheriff" className="hover:opacity-70 font-normal flex items-center justify-center w-[20px] h-[20px]">
                                 <span>yt</span>
                             </a>
                         </div>
