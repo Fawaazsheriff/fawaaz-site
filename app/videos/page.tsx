@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
+import { sentenceCase } from "@/lib/format";
 
 interface Video {
     _id: string;
@@ -21,7 +22,7 @@ interface Video {
 // Custom Hover Overlay Component
 const VideoHoverOverlay = () => (
     <div className="absolute inset-0 bg-[#171a24]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-[18px]">
-        <div className="bg-white text-black rounded-full px-6 py-3 flex items-center gap-2 font-bold transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+        <div className="bg-white text-black rounded-full px-6 py-3 flex items-center gap-2 font-normal transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
             View Episode
             <div className="bg-black text-white rounded-full p-[2px]">
                 <ArrowRight size={14} strokeWidth={3} />
@@ -114,7 +115,7 @@ export default function VideosPage() {
                 {/* 1. FEATURED EPISODE SECTION */}
                 {featuredVideo && (
                     <section className="w-full max-w-[1240px] mx-auto px-4 md:px-8 mb-10 md:mb-16">
-                        <h1 className="text-center font-mono text-[14px] lg:text-[15px] text-[#555] tracking-widest mb-6 md:mb-10 uppercase">
+                        <h1 className="text-center text-[14px] lg:text-[15px] text-[#555] mb-6 md:mb-10 ">
                             FEATURED EPISODE
                         </h1>
 
@@ -132,8 +133,8 @@ export default function VideosPage() {
                             {/* Featured Details */}
                             <div className="flex flex-col justify-center lg:pt-1">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <span className="font-mono text-[11px] text-[#555] uppercase tracking-widest">
-                                        {featuredVideo.tag}
+                                    <span className=" text-[11px] text-[#555] ">
+                                        {sentenceCase(featuredVideo.tag)}
                                     </span>
                                     <span className="text-[#8a8fa8] font-light text-[13px]">
                                         {featuredVideo.date}
@@ -147,7 +148,7 @@ export default function VideosPage() {
                                 </a>
 
                                 <div className="flex items-center justify-between mt-1">
-                                    <a href={`/videos/${featuredVideo._id}`} className="font-mono text-[11px] text-[#555] uppercase tracking-widest flex items-center gap-2 hover:text-[#111] transition-colors">
+                                    <a href={`/videos/${featuredVideo._id}`} className=" text-[11px] text-[#555] flex items-center gap-2 hover:text-[#111] transition-colors">
                                         View Episode <ArrowRight size={16} />
                                     </a>
                                     <SocialIcons />
@@ -190,8 +191,8 @@ export default function VideosPage() {
                                 {/* Meta details */}
                                 <div className="flex items-center justify-between mb-4 w-full">
                                     <div className="flex items-center gap-3">
-                                        <span className="font-mono text-[11px] text-[#555] uppercase tracking-widest">
-                                            {ep.tag}
+                                        <span className=" text-[11px] text-[#555] ">
+                                            {sentenceCase(ep.tag)}
                                         </span>
                                         <span className="text-[#8a8fa8] font-light text-[12px] md:text-[13px]">
                                             {ep.date}
