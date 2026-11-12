@@ -133,7 +133,7 @@ function Logo({ s, className = "" }: { s: Story; className?: string }) {
   return <img src={s.logo} alt="" style={{ height: s.logoH }} className={`w-auto max-w-none [filter:brightness(0)] ${className}`} />;
 }
 
-export function CompanyStories() {
+export function CompanyStories({ inHero = false }: { inHero?: boolean }) {
   const [i, setI] = useState(0);
   const [fade, setFade] = useState(false);
   const video = useRef<HTMLVideoElement>(null);
@@ -186,8 +186,8 @@ export function CompanyStories() {
   };
 
   return (
-    <section id="companies" aria-label="Companies I'm rooting for" className="w-full px-4 md:px-8 pb-20 md:pb-28 scroll-mt-24">
-      <div className="mx-auto max-w-[1280px] border-t border-[#dfe3e7] pt-14 md:pt-16">
+    <section id="companies" aria-label="Companies I'm rooting for" className={`w-full px-4 md:px-8 scroll-mt-24 ${inHero ? "" : "pb-20 md:pb-28"}`}>
+      <div className={`mx-auto max-w-[1280px] ${inHero ? "pt-10 md:pt-10" : "border-t border-[#dfe3e7] pt-14 md:pt-16"}`}>
         <p className="text-[13px] text-[#5a5d63]">Companies I&apos;m rooting for</p>
 
         {/* Logo tabs */}
