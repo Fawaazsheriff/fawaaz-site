@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, IBM_Plex_Mono } from "next/font/google";
+import { Inter_Tight, IBM_Plex_Mono } from "next/font/google";
 import { TopBanner } from "@/components/layout/TopBanner";
 import "./globals.css";
 
-const inter = Inter({
+// Pentagram-style typography: one neutral grotesk, regular weight, slightly tight.
+const inter = Inter_Tight({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 const plexMono = IBM_Plex_Mono({

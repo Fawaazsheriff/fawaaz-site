@@ -96,9 +96,11 @@
   }
 
   body {
-    @apply bg-background text-foreground font-aspekta;
+    @apply bg-background text-foreground font-sans;
     background-color: #ffffff;
-    font-weight: 300;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    font-feature-settings: "ss01", "cv11";
   }
 
   ::selection {
