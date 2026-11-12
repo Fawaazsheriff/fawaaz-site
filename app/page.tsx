@@ -5,7 +5,6 @@ import { InsightsList } from "@/components/sections/InsightsList";
 import { Hero } from "@/components/sections/Hero";
 import { WhoIAm } from "@/components/sections/WhoIAm";
 import { LogoMarquee } from "@/components/sections/LogoMarquee";
-import { CompanyStories } from "@/components/sections/CompanyStories";
 
 // Refresh the homepage every minute so new insights from the admin panel appear without a redeploy.
 export const revalidate = 60;
@@ -17,14 +16,13 @@ export default function Home() {
         <Navbar />
 
         <main className="flex-1 w-full relative">
-          {/* Graphite-study hero */}
+          {/* Cover: headline and company stories */}
           <Hero />
 
-          {/* Content sheet that slides up over the hero */}
+          {/* Content sheet */}
           <div className="relative z-10 w-full bg-[#f4f6f8] rounded-t-[40px] shadow-2xl -mt-[40px] pt-[40px] overflow-clip">
             <LogoMarquee />
             <WhoIAm />
-            <CompanyStories />
             <AreasOfFocus />
             <InsightsList />
           </div>
