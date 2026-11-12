@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { connectDB } from "@/lib/mongodb";
 import Video from "@/lib/models/Video";
+import { sentenceCase } from "@/lib/format";
 
 export default async function VideoDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -35,8 +36,8 @@ export default async function VideoDetailPage({ params }: { params: Promise<{ id
           <div className="flex flex-col gap-6">
             {/* Meta */}
             <div className="flex items-center gap-3">
-              <span className="text-[11px] font-bold tracking-[0.15em] text-[#3847FF] uppercase">
-                {video.tag}
+              <span className="text-[11px] font-normal text-[#3847FF] ">
+                {sentenceCase(video.tag)}
               </span>
               <span className="text-[#8a8fa8] font-light text-[13px]">
                 {video.date}
@@ -78,7 +79,7 @@ export default async function VideoDetailPage({ params }: { params: Promise<{ id
         {/* SHARE SECTION */}
         <section className="w-full max-w-[1100px] mx-auto px-6 sm:px-10 lg:px-12 py-12">
           <div className="flex flex-col gap-6">
-            <h3 className="text-[14px] font-semibold text-[#111] uppercase tracking-wider">
+            <h3 className="text-[14px] font-normal text-[#111] ">
               Share this video
             </h3>
             <div className="flex items-center gap-4">
