@@ -113,7 +113,7 @@ export function Hero() {
         />
 
         {/* White wash so the headline always reads: top on phones, left on desktop */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[55%] bg-gradient-to-b from-white via-white/90 to-transparent md:inset-y-0 md:right-auto md:h-full md:w-[60%] md:bg-gradient-to-r md:from-white md:via-white/85" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[46%] bg-gradient-to-b from-white via-white/85 to-transparent md:inset-y-0 md:right-auto md:h-full md:w-[46%] md:bg-gradient-to-r md:from-white md:via-white/75" />
 
         <motion.div className="pointer-events-none relative z-10 h-full w-full px-6 md:px-12 lg:px-10 pt-[6vh] md:pt-[9vh]" style={{ y: textY }}>
           <div className="pointer-events-auto max-w-[600px]">
@@ -137,22 +137,22 @@ export function Hero() {
         </motion.div>
 
         {/* Story card for the company on screen */}
-        <div className="absolute inset-x-4 bottom-[92px] z-20 md:inset-x-auto md:right-10 md:bottom-[112px] md:w-[540px] lg:right-12">
+        <div className="absolute inset-x-4 bottom-[84px] z-20 md:inset-x-auto md:right-10 md:bottom-[108px] md:w-[400px] lg:right-12">
           <div
             role="tabpanel"
             aria-live="polite"
             aria-label={s.name}
-            className={`rounded-[16px] bg-white/95 p-5 shadow-[0_20px_60px_-20px_rgba(13,18,32,0.45)] backdrop-blur-md transition-all duration-200 md:p-7 ${fade ? "translate-y-2 opacity-0" : "opacity-100"}`}
+            className={`rounded-[12px] bg-white/95 p-4 shadow-[0_20px_60px_-20px_rgba(13,18,32,0.45)] backdrop-blur-md transition-all duration-200 md:p-5 ${fade ? "translate-y-2 opacity-0" : "opacity-100"}`}
           >
             <div className="flex items-center justify-between gap-4">
-              <div className="flex h-9 items-center">
+              <div className="flex h-7 origin-left scale-[0.72] items-center">
                 <Logo s={s} />
               </div>
               <a
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#1C1D20] px-4 py-2 text-[13px] text-white transition-colors hover:bg-[#3847FF]"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#1C1D20] px-3 py-1.5 text-[11.5px] text-white transition-colors hover:bg-[#3847FF]"
               >
                 Visit {s.name.split(" ")[0]}
                 <svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true">
@@ -160,16 +160,16 @@ export function Hero() {
                 </svg>
               </a>
             </div>
-            <p className="mt-4 text-[19px] leading-[1.3] tracking-[-0.01em] text-[#1C1D20] md:mt-5 md:text-[24px]">{s.headline}</p>
-            <dl className="mt-4 grid grid-cols-3 gap-3 border-t border-[#e6e8eb] pt-4 md:mt-6 md:gap-5 md:pt-5">
+            <p className="mt-3 text-[15px] leading-[1.35] text-[#1C1D20] md:text-[16px]">{s.headline}</p>
+            <dl className="mt-3 grid grid-cols-3 gap-3 border-t border-[#e6e8eb] pt-3 md:gap-4">
               {s.stats.map((x) => (
                 <div key={x.label}>
-                  <dt className="text-[17px] leading-tight tracking-[-0.01em] text-[#1C1D20] md:text-[24px]">{x.value}</dt>
-                  <dd className="mt-1 text-[11.5px] leading-[1.35] text-[#6b6e74] md:text-[13px]">{x.label}</dd>
+                  <dt className="text-[15px] leading-tight text-[#1C1D20] md:text-[17px]">{x.value}</dt>
+                  <dd className="mt-1 text-[11px] leading-[1.35] text-[#6b6e74] md:text-[11.5px]">{x.label}</dd>
                 </div>
               ))}
             </dl>
-            <p className="mt-4 text-[10px] leading-snug text-[#9a9da3] md:mt-5 md:text-[11px]">Illustrative footage of each sector. Not affiliations or investment recommendations.</p>
+            <p className="mt-3 text-[9.5px] leading-snug text-[#9a9da3] md:text-[10px]">Illustrative footage of each sector. Not affiliations or investment recommendations.</p>
           </div>
         </div>
 
