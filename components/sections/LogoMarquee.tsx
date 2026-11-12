@@ -8,7 +8,7 @@ const LOGOS: Logo[] = [
   { name: "Skyroot Aerospace", src: "/logo-skyroot.svg", h: 42 },
   { name: "Sarvam", src: "/logo-sarvam.svg", h: 24 },
   { name: "ideaForge", h: 26 },
-  { name: "Mindgrove", src: "/logo-mindgrove.svg", h: 30 },
+  { name: "Agrani Labs", src: "/logo-agrani.png", h: 30 },
   { name: "Rocketlane", src: "/logo-rocketlane.svg", h: 24 },
   { name: "Navi", src: "/logo-navi.svg", h: 30 },
   { name: "Bellatrix Aerospace", src: "/logo-bellatrix.png", h: 46 },

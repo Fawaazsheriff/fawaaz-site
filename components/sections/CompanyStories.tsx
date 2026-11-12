@@ -56,16 +56,16 @@ export const STORIES: Story[] = [
     ],
   },
   {
-    name: "Mindgrove",
-    logo: "/logo-mindgrove.svg",
+    name: "Agrani Labs",
+    logo: "/logo-agrani.png",
     logoH: 26,
-    url: "https://www.mindgrovetech.in",
-    headline: "Mindgrove designed India's first commercial high-performance microcontroller.",
+    url: "https://agranilabs.com",
+    headline: "Agrani Labs is building India's own AI chips, and the software to run them.",
     clip: [10.5, 13.5],
     stats: [
-      { value: "700 MHz", label: "Secure IoT chip, RISC-V" },
-      { value: "28 nm", label: "process" },
-      { value: "~30%", label: "cheaper than comparable chips" },
+      { value: "Dec 2024", label: "founded in Bengaluru by AMD and Intel veterans" },
+      { value: "$8M", label: "seed round led by Peak XV Partners" },
+      { value: "CUDA", label: "compatible AI inference chips in development" },
     ],
   },
   {

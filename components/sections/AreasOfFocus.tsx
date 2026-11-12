@@ -33,11 +33,11 @@ const AREAS: Area[] = [
   },
   {
     title: "Aerospace & Defence",
-    description: "Space and defence companies moving from procurement programmes to products, and the capital that now backs them.",
-    topics: ["Space tech", "Defence tech", "Drones"],
-    image: img("photo-1457364887197-9150188c107b"),
-    alt: "A rocket's trail across the dusk sky",
-    tags: ["AEROSPACE & DEFENCE", "AEROSPACE", "DEFENCE TECH", "SPACE TECH"],
+    description: "Defence and aerospace companies moving from procurement programmes to products, and the capital that now backs them.",
+    topics: ["Defence tech", "Drones", "Aircraft components"],
+    image: img("photo-1473968512647-3e447244af8f"),
+    alt: "A drone in flight",
+    tags: ["AEROSPACE & DEFENCE", "AEROSPACE", "DEFENCE TECH"],
   },
   {
     title: "Financial Services & Fintech",
@@ -56,12 +56,12 @@ const AREAS: Area[] = [
     tags: ["SEMICONDUCTORS", "TMT", "MEDIA", "TELECOM"],
   },
   {
-    title: "Energy & Climate Tech",
-    description: "The build-out of clean power, storage and the software that runs a changing grid.",
-    topics: ["Renewables", "Energy storage", "Grid software"],
-    image: img("photo-1466611653911-95081537e5b7"),
-    alt: "Wind turbines at sunset",
-    tags: ["ENERGY", "CLIMATE", "ENERGY & CLIMATE TECH"],
+    title: "Space Tech",
+    description: "Launch vehicles, satellites and in-orbit propulsion, as India opens its space economy to private companies.",
+    topics: ["Launch vehicles", "Satellites", "Space propulsion"],
+    image: img("photo-1457364887197-9150188c107b"),
+    alt: "A rocket's trail across the dusk sky",
+    tags: ["SPACE TECH", "SPACE"],
   },
 ];
 
