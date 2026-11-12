@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
  * Stripe-style customer stories: pick a company, see one line on what it does,
  * a video panel and three facts. Footage is the sector shot from hero-reel.mp4.
  */
-type Story = {
+export type Story = {
   name: string;
   logo?: string;
   logoH: number;
@@ -16,7 +16,7 @@ type Story = {
   stats: { value: string; label: string }[];
 };
 
-const STORIES: Story[] = [
+export const STORIES: Story[] = [
   {
     name: "Skyroot Aerospace",
     logo: "/logo-skyroot.svg",
@@ -122,7 +122,7 @@ const STORIES: Story[] = [
   },
 ];
 
-function Logo({ s, className = "" }: { s: Story; className?: string }) {
+export function Logo({ s, className = "" }: { s: Story; className?: string }) {
   if (!s.logo)
     return (
       <span className={`whitespace-nowrap leading-none text-black ${className}`} style={{ fontSize: s.logoH }}>
