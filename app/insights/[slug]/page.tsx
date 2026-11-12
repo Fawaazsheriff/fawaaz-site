@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { connectDB } from "@/lib/mongodb";
 import Insight from "@/lib/models/Insight";
+import { sentenceCase } from "@/lib/format";
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -38,8 +39,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
                         {/* Left: text */}
                         <div className="flex flex-col justify-center">
-                            <span className="text-[11px] font-bold tracking-[0.15em] text-[#3847FF] uppercase mb-4">
-                                {article.tag}
+                            <span className="text-[11px] font-normal text-[#3847FF] mb-4">
+                                {sentenceCase(article.tag)}
                             </span>
                             <h1 className="text-[28px] md:text-[36px] font-light leading-[1.25] tracking-tight text-[#111] mb-5">
                                 {article.title}
@@ -81,7 +82,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                                                 className="w-10 h-10 rounded-full object-cover bg-gray-200"
                                             />
                                             <div>
-                                                <p className="text-[14px] font-medium text-[#111] leading-tight">{author.name}</p>
+                                                <p className="text-[14px] font-normal text-[#111] leading-tight">{author.name}</p>
                                                 <p className="text-[12px] text-[#777] mt-[2px]">{author.role}</p>
                                             </div>
                                         </div>
@@ -116,7 +117,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
                             {/* Newsletter signup */}
                             <div>
-                                <p className="text-[14px] font-semibold text-[#111] mb-3">Stay ahead with Fawaaz</p>
+                                <p className="text-[14px] font-normal text-[#111] mb-3">Stay ahead with Fawaaz</p>
                                 <form className="flex items-center gap-0 border border-gray-300 rounded-none overflow-hidden hover:border-gray-500 transition-colors">
                                     <input
                                         type="email"
